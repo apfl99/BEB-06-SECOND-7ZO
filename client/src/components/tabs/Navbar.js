@@ -1,4 +1,4 @@
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import { Link } from "react-router-dom";
 import { Button } from "antd";
 import '../../assets/styles/tabs/Navbar.css';

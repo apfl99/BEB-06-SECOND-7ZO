@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import { Home, Market, MintNFT, MyPage, PostCreate, PostDetail, Signin, Signup } from './pages/index'
 import { Navbar } from './components'
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import './assets/styles/App.css';
 
 function App() {
