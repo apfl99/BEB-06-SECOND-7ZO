@@ -120,6 +120,12 @@ const login =  async (req, res) => {
     }
 };
 
+const transfer20 = async (req, res) => {
+
+};
+
+
 exports.userInfo = userInfo;
 exports.join = join;
 exports.login = login;
+exports.transfer20 = transfer20;
