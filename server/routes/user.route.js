@@ -10,6 +10,6 @@ router.post("/login", usersController.login);
 
 router.post("/join", usersController.join);
 
-router.post("/transfer_20", usersController.transfer20);
+router.post("/:uid/transfer_20", usersController.transfer20);
 
 module.exports = router;
