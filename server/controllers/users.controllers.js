@@ -12,12 +12,43 @@ require('dotenv').config();
 const userInfo = async (req, res) => {
     console.log(req.params.uid)
 
-    const userInfoSearch = await User.findOne({ where: { login_id : req.params.uid } });
-    if(userInfoSearch != null) {
-        return res.status(200).json({message: "success", data : userInfoSearch.dataValues});
-    } else {
+    // 유저 정보
+    const user = await User.findOne({
+        where: {
+            login_id : req.params.uid
+        }
+    });
+    if(user == null) {
         return res.status(404).json({data : null});
     }
+
+
+    var userInfo = user.dataValues;
+
+    // 포스팅 정보
+    const posts = await user.getPosts();
+    var postInfo_arr = [];
+    posts.forEach(element => {
+        postInfo_arr.push(element.dataValues);
+    });
+    console.log(postInfo_arr)
+
+    // NFT 정보
+    const nfts = await user.getNFTs();
+    var nftInfo_arr = [];
+    nfts.forEach(element => {
+        nftInfo_arr.push(element.dataValues);
+    });
+    console.log(nftInfo_arr)
+
+    
+    return res.status(200).json({message: "success", 
+        data : {
+            userData : userInfo,
+            postData : postInfo_arr,
+            nftData : nftInfo_arr
+        }
+    });
 
 };
 
@@ -88,7 +119,7 @@ const login =  async (req, res) => {
     //이미 있는 login_id 검사
     const loginIdSearch = await User.findOne({ where: { login_id : user_id } });
     console.log(loginIdSearch.dataValues)
-    
+
     if (loginIdSearch != null) { // 해당 user_id가 있을 경우
 
         var userData  = {}; // 유저 정보 담을 객체
