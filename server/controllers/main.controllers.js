@@ -1,4 +1,6 @@
-const main = (req, res) => {};
+const main = (req, res) => {
+    console.log("main")
+};
 
 const newTopic = (req, res) => {};
 
