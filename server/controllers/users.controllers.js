@@ -87,13 +87,17 @@ const login =  async (req, res) => {
 
     //이미 있는 login_id 검사
     const loginIdSearch = await User.findOne({ where: { login_id : user_id } });
+    console.log(loginIdSearch.dataValues)
+    
     if (loginIdSearch != null) { // 해당 user_id가 있을 경우
 
         var userData  = {}; // 유저 정보 담을 객체
         userData = loginIdSearch.dataValues;
-        delete userData.password;
 
         if(userData.password === password) { // 비밀번호 일치
+
+            delete userData.password; // 비밀번호 제외
+
             //JWT 발급
             var accessToken = jwt.sign(
                 userData,
