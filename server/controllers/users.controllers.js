@@ -49,8 +49,8 @@ const join = async (req, res) => {
         return res.status(400).json({message2 : "nickname already exists"});
     }   
 
-    //블록체인 계정 생성 및 잔액 userData에 업데이트 
-    
+    //블록체인 계정 생성 및 잔액 userData에 업데이트 : smartContract 작업 후 추가 예정
+
 
     //DB Insert
     const newUser = await User.create(userData);
