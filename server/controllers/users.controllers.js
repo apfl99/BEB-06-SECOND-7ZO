@@ -9,6 +9,9 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 
+const Web3 = require('web3');
+const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545')); // 가나슈와 연동(로컬)
+
 const userInfo = async (req, res) => {
     console.log(req.params.uid)
 
@@ -81,7 +84,12 @@ const join = async (req, res) => {
     }   
 
     //블록체인 계정 생성 및 잔액 userData에 업데이트 : smartContract 작업 후 추가 예정
+    const accounts = await web3.eth.getAccounts(); // web3를 활용하여 Ganache 계정 가져오기
+    const new_account = await web3.eth.personal.newAccount(password);
+    userData.address = new_account;
 
+    console.log(userData)
+    console.log(await web3.eth.getAccounts())
 
     //DB Insert
     const newUser = await User.create(userData);
@@ -118,7 +126,7 @@ const login =  async (req, res) => {
 
     //이미 있는 login_id 검사
     const loginIdSearch = await User.findOne({ where: { login_id : user_id } });
-    console.log(loginIdSearch.dataValues)
+    // console.log(loginIdSearch.dataValues)
 
     if (loginIdSearch != null) { // 해당 user_id가 있을 경우
 
