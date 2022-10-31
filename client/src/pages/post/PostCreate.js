@@ -31,6 +31,7 @@ function PostCreate() {
   function inputContent(e) {
     setContent(e.target.value); 
   }
+
   const createPost= async ()=>{
     
     try{
@@ -61,7 +62,7 @@ function PostCreate() {
     multiple: true,
     action: 'https://api.nft.storage/upload',
     headers:{withCredentials:true,"Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGEyQTlGNTMxMkVDQjM4OGQ0NTdEODkzQjlEZkM4YWI1MWM4ZTQzZjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2NzA2MzA1MzA3OSwibmFtZSI6ImltYWdlVGVzdCJ9.xqjlAjrKyRJVOBD-6igpXvL-L-35syf401kWpDlfCrc"},
-    
+    maxCount:1,
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
@@ -75,7 +76,7 @@ function PostCreate() {
       }
     },
     onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
+      //console.log('Dropped files', e.dataTransfer.files);
     },
   };
 
