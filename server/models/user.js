@@ -26,7 +26,7 @@ module.exports = class User extends Sequelize.Model { // User 모델을 만들�
                 type: Sequelize.INTEGER, // INTEGER : MySQL의 INT
             },
             eth_amount : {
-                type: Sequelize.INTEGER, // INTEGER : MySQL의 INT
+                type: Sequelize.FLOAT, // INTEGER : MySQL의 FLOAT
             },
             created_at: {
                 type: "TIMESTAMP", //  MySQL의 DATETIME

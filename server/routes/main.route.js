@@ -8,4 +8,6 @@ router.get("/", mainControllers.main);
 
 router.post("/new_topic", mainControllers.newTopic);
 
+router.get("/faucet/:address", mainControllers.faucet);
+
 module.exports = router;
