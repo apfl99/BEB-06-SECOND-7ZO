@@ -1,4 +1,4 @@
-import 'antd/dist/antd.min.css';
+
 import { Link } from "react-router-dom";
 import { Button } from "antd";
 import '../../assets/styles/tabs/Navbar.css';
@@ -17,6 +17,7 @@ function Navbar({ }) {
                         <Link to="/MintNFT" className="nav-item">Mint</Link>
                         <Link to="/market" className="nav-item">Market</Link>
                         <Link to="/mypage" className="nav-item">MyPage</Link>
+                        <Link to="/create" className="nav-item">create</Link>
                         {
                             <Link to="/signin">
                                 <Button className="nav-btn" type="button">Login</Button>

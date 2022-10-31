@@ -6,18 +6,17 @@ import 'antd/dist/antd.min.css';
 import './assets/styles/App.css';
 
 function App() {
-  let account = useSelector((state) => state.account)
   return (
     <div className="App stop-dragging">
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home account={account} />} />
-          <Route path="/MintNFT" element={<MintNFT account={account} />} />
-          <Route path="/market" element={<Market account={account}  />} />
-          <Route path="/create" element={<PostCreate account={account}  />} />
-          {/* <Route path="/detail/:id" element={<PostDetail account={account}  />} /> */}
-          <Route path="/mypage" element={<MyPage account={account}  />} />
+          <Route path="/" element={<Home  />} />
+          <Route path="/MintNFT" element={<MintNFT  />} />
+          <Route path="/market" element={<Market   />} />
+          <Route path="/create" element={<PostCreate   />} />
+          <Route path="/detail/:id" element={<PostDetail />} />
+          <Route path="/mypage" element={<MyPage   />} />
           {/* <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} /> */}
         </Routes>
