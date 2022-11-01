@@ -1,8 +1,10 @@
 
 
 function MintNFT() {
-  return (
-    <div>이곳은 NFT minting 페이지</div>
+  return ( 
+    <header>
+      <h1>Create Your NFT</h1>
+    </header>
   )
 }
 
