@@ -13,7 +13,8 @@ const Web3 = require('web3');
 const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545')); // 가나슈와 연동(로컬)
 
 
-//컨트랙 정보 읽어오기
+//Truffle로 배포한 컨트랙 정보 읽어오기
+//배포시 ABI, Address 파일 형태로 저장하도록 했습니다! -> contract/2_initial_migration.js 확인하시면 됩니다!
 const fs = require('fs');
 var DEPLOYED_ABI = JSON.parse(fs.readFileSync('../contract/20deployedABI', 'utf8'));
 var DEPLOYED_ADDRESS = fs.readFileSync('../contract/20deployedAddress', 'utf8').replace(/\n|\r/g, "");
@@ -182,6 +183,7 @@ const transfer20 = async (req, res) => {
         return res.status(404).json({ message2: "Can’t execute request"})
     }
 
+    //recipient 계정 주소 저장
     const recipientAddress = recipientSearch.dataValues.address;
 
     //accessToken 검증
@@ -202,12 +204,14 @@ const transfer20 = async (req, res) => {
                 // var tokenBalance = await Contract.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
                 // console.log(tokenBalance)
 
-                //UnLock
+                //UnLock : Sender Address
                 await web3.eth.personal.unlockAccount(decoded.address,password,600)
 
                 // 토큰 전송 트랜잭션 발생 : (토큰 수신자 주소, 전송 토큰 양) 인자, send를 통해 트랜잭션 발생(이때, erc20.sol에 따라 토큰 보유자만 전송 가능)
                 const receipt = await Contract20.methods.transfer(recipientAddress,transfer_amount).send({from:decoded.address});
-                
+                console.log(receipt)
+
+
                 //토큰 전송 후 DB 업데이트(토큰 잔액)
                 var SenderTokenBalance = await Contract20.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
                 var RecipientTokenBalance = await Contract20.methods.balanceOf(recipientAddress).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
@@ -237,7 +241,7 @@ const transfer20 = async (req, res) => {
                     }
                 )
 
-                return res.status(200).json({message: "Transfer success"});
+                return res.status(200).json({message: "Transfer success", data : {tx : receipt.transactionHash}});
                 
             } catch(e) {
                 console.log("Invaild TX")
