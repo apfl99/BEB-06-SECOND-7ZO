@@ -31,7 +31,7 @@ function PostCreate() {
       try{
         const result = await axios({
           method: "get",
-          url: `http://localhost:8080/topic/${id}`,
+          url: `http://localhost:3001/topic/${id}`,
           headers: {
             Accpet: "application/json",
           },

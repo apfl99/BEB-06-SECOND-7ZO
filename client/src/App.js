@@ -17,8 +17,8 @@ function App() {
           <Route path="/create" element={<PostCreate   />} />
           <Route path="/detail/:id" element={<PostDetail />} />
           <Route path="/mypage" element={<MyPage   />} />
-          {/* <Route path="/signin" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} /> */}
+           <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
     </div>
