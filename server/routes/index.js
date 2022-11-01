@@ -1,11 +1,9 @@
-const express = require("express");
-
 const main = require("./main.route");
 const user = require("./user.route");
 const topic = require("./topic.route");
 const market = require("./market.route");
 
-const router = express.Router();
+const router = require("express").Router();
 
 router.use("/", main);
 

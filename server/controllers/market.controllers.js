@@ -8,8 +8,10 @@ const sellNft = (req, res) => {};
 
 const buyNft = (req, res) => {};
 
-exports.getNftLists = getNftLists;
-exports.sellNft = sellNft;
-exports.buyNft = buyNft;
-exports.detailNft = detailNft;
-exports.mintNft = mintNft;
+module.exports = {
+  getNftLists,
+  mintNft,
+  detailNft,
+  sellNft,
+  buyNft,
+};

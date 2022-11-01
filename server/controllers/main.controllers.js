@@ -2,8 +2,9 @@
 const { sequelize } = require("../models");
 const db = require("../models");
 const User = require("../models/user");
+const Post = require("../models/post");
 db.User = User;
-User.init(sequelize);
+db.Post = Post;
 
 // Web3 객체 생성
 const Web3 = require("web3");
@@ -14,11 +15,26 @@ const jwt = require("jsonwebtoken");
 
 require("dotenv").config();
 
-const main = (req, res) => {
-  console.log("main");
+// 렌더링 페이지
+const main = async (req, res) => {
+  const topics = await Post.findAll({
+    attributes: ["title", "img_url", "content", "created_at"],
+  });
+  res.status(200).send(topics);
 };
 
-const newTopic = (req, res) => {};
+// 글 작성
+const newTopic = async (req, res) => {
+  const { title, content, img_url } = req.body;
+
+  let info = {
+    title: title,
+    content: content,
+    img_url: img_url,
+  };
+  const topic = await Post.create(info);
+  res.status(200).send(topic);
+};
 
 const faucet = async (req, res) => {
   console.log(req.params.address);
@@ -80,6 +96,8 @@ const faucet = async (req, res) => {
   }
 };
 
-exports.main = main;
-exports.newTopic = newTopic;
-exports.faucet = faucet;
+module.exports = {
+  main,
+  newTopic,
+  faucet,
+};
