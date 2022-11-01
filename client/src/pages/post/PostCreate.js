@@ -1,3 +1,4 @@
+
 import React, {  useState } from "react";
 import axios from "axios"
 import { useSelector } from 'react-redux';
@@ -31,12 +32,13 @@ function PostCreate() {
   function inputContent(e) {
     setContent(e.target.value); 
   }
+
   const createPost= async ()=>{
     
     try{
       const result = await axios({
         method: "post",
-        url: "http://localhost:8080/images",
+        url: "http://localhost:3001/new_topic",
         headers: {
           Accpet: "application/json",
           authorization: `Bearer ${accessToken}`,
@@ -60,8 +62,8 @@ function PostCreate() {
     name: 'file',
     multiple: true,
     action: 'https://api.nft.storage/upload',
-    headers:{withCredentials:true,"Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGEyQTlGNTMxMkVDQjM4OGQ0NTdEODkzQjlEZkM4YWI1MWM4ZTQzZjgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2NzA2MzA1MzA3OSwibmFtZSI6ImltYWdlVGVzdCJ9.xqjlAjrKyRJVOBD-6igpXvL-L-35syf401kWpDlfCrc"},
-    
+    headers:{withCredentials:true,"Authorization":`Bearer ${process.env.REACT_APP_API_KEY}`},
+    maxCount:1,
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {
@@ -75,7 +77,7 @@ function PostCreate() {
       }
     },
     onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files);
+      //console.log('Dropped files', e.dataTransfer.files);
     },
   };
 
