@@ -1,41 +1,72 @@
-import { Button, Checkbox, Form, Input } from 'antd';
-/*
+
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
+import { Button, message, Form, Input } from 'antd';
+import axios from "axios";
+/*req
 {
 ”message” : “success”,
 ”access_token”: “Token”(string)
 }
+
+res
 */
 function Signin() {
+  const navigate=useNavigate();
+  const dispatch=useDispatch();
+
+  const logIn=async ({userId,password})=>{
+    try{
+      const result = await axios({
+        method: "get",
+        url: `http://localhost:3001/user/login`,
+        headers: {
+          Accpet: "application/json",
+        },
+        withCredentials: true,
+        data: { userId, password },
+      });
+      const userInfo=result.data;
+      dispatch({type:"accountSlice/login",payload:userInfo});
+    }catch(err){
+      message.error(`failed post${userId}     ,     ${password}`);
+    }
+  };
+
   const onFinish = (values) => {
-    console.log('Success:', values);
+    logIn(values);
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
   return (
+    
     <Form
       name="basic"
       labelCol={{
         span: 8,
+        
       }}
       wrapperCol={{
-        span: 16,
+        span: 8,
       }}
       initialValues={{
         remember: true,
       }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      autoComplete="off"
+      autoComplete="off" 
+      style={{marginTop:'5vh'}}
     >
       <Form.Item
-        label="Username"
-        name="username"
+        label="UserID"
+        name="userId"
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: '아이디를 입력해주세요!',
           },
+          
         ]}
       >
         <Input />
@@ -47,35 +78,30 @@ function Signin() {
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: '비밀번호를 입력해주세요!',
           },
+          
         ]}
       >
         <Input.Password />
       </Form.Item>
 
       <Form.Item
-        name="remember"
-        valuePropName="checked"
         wrapperCol={{
           offset: 8,
-          span: 16,
+          span: 12,
         }}
       >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          Submit
+        <Button type="primary" onClick={()=>navigate('/signup')}>
+          회원가입
+        </Button>
+        <Button type="primary" htmlType="submit" >
+          로그인
         </Button>
       </Form.Item>
+      
     </Form>
+    
   )
 }
   

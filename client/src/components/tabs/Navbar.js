@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import { Button } from "antd";
 import '../../assets/styles/tabs/Navbar.css';
 
 // eslint-disable-next-line
 function Navbar({ }) {
+    const {isLogin,nickname}=useSelector((state) =>{
+        return state.account;
+      });
     const navigate=useNavigate();
     return (
         <div className="Navbar">
@@ -19,7 +23,7 @@ function Navbar({ }) {
                         <Link to="/market" className="nav-item">Market</Link>
                         <Link to="/mypage" className="nav-item">MyPage</Link>
                         
-                        {
+                        {isLogin?<div>{nickname}</div> :
                             <Link to="/signin">
                                 <Button className="nav-btn" type="button" onClick={()=>{navigate("/signin")}}>Login</Button>
                             </Link>
