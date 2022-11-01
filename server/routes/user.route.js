@@ -8,6 +8,8 @@ router.get("/:uid", usersController.userInfo);
 
 router.post("/login", usersController.login);
 
-router.post("/:uid", usersController.join);
+router.post("/join", usersController.join);
+
+router.post("/:uid/transfer_20", usersController.transfer20);
 
 module.exports = router;

@@ -1,4 +1,8 @@
-const getTopic = (req, res) => {};
+const getTopic = (req, res) => {
+
+    console.log("tets")
+
+};
 
 const updateTopic = (req, res) => {};
 
