@@ -61,7 +61,7 @@ const faucet =  async (req, res) => {
             //DB에 잔액 업데이트
             await User.update(
                 {
-                    eth_amount : Number(userBalance_eth).toFixed(4),
+                    eth_amount : Number(userBalance_eth).toFixed(4), // 소수점 4자리에서 컷
                 },
                 {
                     where: {id : decoded.id},
