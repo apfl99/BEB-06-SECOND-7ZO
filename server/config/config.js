@@ -1,4 +1,4 @@
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config();
 
 module.exports = {
   development: {
@@ -9,4 +9,3 @@ module.exports = {
     dialect: "mysql",
   },
 };
-console.log(process.env.DB_USER);
