@@ -12,6 +12,13 @@ require('dotenv').config();
 const Web3 = require('web3');
 const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545')); // 가나슈와 연동(로컬)
 
+
+//컨트랙 정보 읽어오기
+const fs = require('fs');
+var DEPLOYED_ABI = JSON.parse(fs.readFileSync('../contract/20deployedABI', 'utf8'));
+var DEPLOYED_ADDRESS = fs.readFileSync('../contract/20deployedAddress', 'utf8').replace(/\n|\r/g, "");
+const Contract20 = new web3.eth.Contract(DEPLOYED_ABI,DEPLOYED_ADDRESS);
+
 const userInfo = async (req, res) => {
     console.log(req.params.uid)
 
@@ -164,6 +171,93 @@ const login =  async (req, res) => {
 };
 
 const transfer20 = async (req, res) => {
+    console.log(req.body);
+
+    const {user_id, password, recipient, transfer_amount} = req.body;
+
+    //recipient가 유효한 계정인지
+    const recipientSearch = await User.findOne({ where: { login_id : recipient } });
+    if(recipientSearch == null) {
+        console.log("Invaild Recipient")
+        return res.status(404).json({ message2: "Can’t execute request"})
+    }
+
+    const recipientAddress = recipientSearch.dataValues.address;
+
+    //accessToken 검증
+    if(req.headers.authorization) { // 헤더 정보 있
+        const token = req.headers.authorization.replace(/^Bearer\s+/, "");
+    
+        jwt.verify(token, process.env.ACCESS_SECRET, async (err, decoded)=> {
+          if(err) {
+            return res.status(404).json({ message: "invalid access token"})
+          } else { // 인증 완료
+            
+            //Transfer
+            try {
+                // 이부분은 테스트를 위한 서버 첫번째 계정에서 특정 계정으로 ERC20토큰을 보내는 로직입니다.
+                // const accounts = await web3.eth.getAccounts();
+                // const serverAccount = accounts[0];
+                // await Contract.methods.transfer(decoded.address,100).send({from: serverAccount});
+                // var tokenBalance = await Contract.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
+                // console.log(tokenBalance)
+
+                //UnLock
+                await web3.eth.personal.unlockAccount(decoded.address,password,600)
+
+                // 토큰 전송 트랜잭션 발생 : (토큰 수신자 주소, 전송 토큰 양) 인자, send를 통해 트랜잭션 발생(이때, erc20.sol에 따라 토큰 보유자만 전송 가능)
+                const receipt = await Contract20.methods.transfer(recipientAddress,transfer_amount).send({from:decoded.address});
+                
+                //토큰 전송 후 DB 업데이트(토큰 잔액)
+                var SenderTokenBalance = await Contract20.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
+                var RecipientTokenBalance = await Contract20.methods.balanceOf(recipientAddress).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
+
+                console.log(SenderTokenBalance)
+                console.log(RecipientTokenBalance)
+
+
+                //DB에 잔액 업데이트
+                // Sender
+                await User.update(
+                    {
+                        token_amount : SenderTokenBalance,
+                    },
+                    {
+                        where: {address : decoded.address},
+                    }
+                )
+
+                //Recipient
+                await User.update(
+                    {
+                        token_amount : RecipientTokenBalance,
+                    },
+                    {
+                        where: {address : recipientAddress},
+                    }
+                )
+
+                return res.status(200).json({message: "Transfer success"});
+                
+            } catch(e) {
+                console.log("Invaild TX")
+                console.log(e)
+                return res.status(404).json({ message2: "Can’t execute request"})
+            }
+
+
+          }
+        })
+      }
+    else {
+        return res.status(404).json({message: "invalid access token"})
+    }
+
+
+    // const loginIdSearch = await User.findOne({ where: { login_id : user_id } });
+
+    
+
 
 };
 
