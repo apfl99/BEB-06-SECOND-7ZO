@@ -51,13 +51,16 @@ function Market() {
                 return (
                   <Col xs={12} xl={6}> {/*key={Symbol(idx + 1).toString()}/Row>*/}
                     <Card
-                      key={collectionData.name}
+                      //key={collectionData.name}
                       hoverable
-                      cover={<Image alt="collection-card" src={Img} preview={false} style={{ height: 500 }} />}
+                      cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
                     >
-                    <Meta title={name} description={desc} />
-                  </Card>
-                </Col>
+                    <Meta title="Europe Street beat" description="www.instagram.com" />
+                  {/*    cover={<Image alt="collection-card" src={Img} preview={false} style={{ height: 500 }} />}
+                    >
+                <Meta title={name} description={desc} /> */}
+                    </Card>
+                  </Col>
                 );
               })}
             </Row>
