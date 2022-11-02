@@ -1,8 +1,6 @@
-const express = require("express");
-
 const usersController = require("../controllers/users.controllers");
 
-const router = express.Router();
+const router = require("express").Router();
 
 router.get("/:uid", usersController.userInfo);
 
