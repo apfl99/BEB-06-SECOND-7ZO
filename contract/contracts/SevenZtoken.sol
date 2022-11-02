@@ -115,10 +115,10 @@ contract SevenZtoken is ERC20Interface {
         returns (bool)
     {
         uint256 currentAllownace = _allowances[msg.sender][spender];
-        require(
-            currentAllownace >= amount,
-            "ERC20: Transfer amount exceeds allowance"
-        );
+        // require(
+        //     currentAllownace >= amount,
+        //     "ERC20: Transfer amount exceeds allowance"
+        // );
         _approve(msg.sender, spender, currentAllownace, amount);
         return true;
     }

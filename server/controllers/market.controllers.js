@@ -35,5 +35,3 @@ module.exports = {
   sellNft,
   buyNft,
 };
-
-// login, join

@@ -91,13 +91,13 @@ const join = async (req, res) => {
     return res.status(400).json({ message2: "nickname already exists" });
   }
 
-  //블록체인 계정 생성 및 잔액 userData에 업데이트 : smartContract 작업 후 추가 예정
-  const accounts = await web3.eth.getAccounts(); // web3를 활용하여 Ganache 계정 가져오기
-  const new_account = await web3.eth.personal.newAccount(password);
-  userData.address = new_account;
+  //블록체인 계정 생성 및 잔액 userData에 업데이트
+  const new_account = await web3.eth.accounts.create();
+  const address = new_account.address;
+  const privateKey = new_account.privateKey;
+  userData.address = address;
 
   console.log(userData);
-  console.log(await web3.eth.getAccounts());
 
   //DB Insert
   const newUser = await User.create(userData);
@@ -117,7 +117,12 @@ const join = async (req, res) => {
     res.cookie("refreshToken", refreshToken);
   }
 
-  return res.status(200).json({ message: "success", accessToken: accessToken });
+  userData["privateKey"] = privateKey;
+  console.log(userData);
+
+  return res
+    .status(200)
+    .json({ message: "success", accessToken: accessToken, userInfo: userData });
 };
 
 const login = async (req, res) => {
@@ -139,20 +144,23 @@ const login = async (req, res) => {
       // 비밀번호 일치
 
       delete userData.password; // 비밀번호 제외
+      delete userData.id; // DB id 제외
 
       //JWT 발급
       var accessToken = jwt.sign(userData, process.env.ACCESS_SECRET, {
-        expiresIn: "5m",
+        expiresIn: "10m",
       });
       var refreshToken = jwt.sign(userData, process.env.REFRESH_SECRET, {
-        expiresIn: "5m",
+        expiresIn: "10m",
       });
 
       res.cookie("refreshToken", refreshToken);
 
-      return res
-        .status(200)
-        .json({ message: "success", accessToken: accessToken });
+      return res.status(200).json({
+        message: "success",
+        accessToken: accessToken,
+        userInfo: userData,
+      });
     } else {
       // 비밀번호 불일치
       return res.status(400).json({ message: "Unauthrized" });
@@ -166,8 +174,10 @@ const login = async (req, res) => {
 const transfer20 = async (req, res) => {
   console.log(req.body);
 
-  const { user_id, password, recipient, transfer_amount } = req.body;
+  const { user_id, password, privateKey, recipient, transfer_amount } =
+    req.body;
 
+  console.log(recipient);
   //recipient가 유효한 계정인지
   const recipientSearch = await User.findOne({
     where: { login_id: recipient },
@@ -194,20 +204,48 @@ const transfer20 = async (req, res) => {
         //Transfer
         try {
           // 이부분은 테스트를 위한 서버 첫번째 계정에서 특정 계정으로 ERC20토큰을 보내는 로직입니다.
+          // 서버는 네트워크에 등록되어 있어 서명 X(Ganache에서 가지고 있음)
           // const accounts = await web3.eth.getAccounts();
           // const serverAccount = accounts[0];
-          // await Contract.methods.transfer(decoded.address,100).send({from: serverAccount});
-          // var tokenBalance = await Contract.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
+          // await Contract20.methods.transfer(decoded.address,100).send({from: serverAccount});
+          // var tokenBalance = await Contract20.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
           // console.log(tokenBalance)
 
-          //UnLock : Sender Address
-          await web3.eth.personal.unlockAccount(decoded.address, password, 600);
-
           // 토큰 전송 트랜잭션 발생 : (토큰 수신자 주소, 전송 토큰 양) 인자, send를 통해 트랜잭션 발생(이때, erc20.sol에 따라 토큰 보유자만 전송 가능)
-          const receipt = await Contract20.methods
-            .transfer(recipientAddress, transfer_amount)
-            .send({ from: decoded.address });
-          console.log(receipt);
+
+          //트랜잭션 서명
+          //SignTX를 위한 Buffer형태로 변환
+          const privateKey_B = Buffer.from(privateKey, "hex");
+          console.log(privateKey_B);
+
+          var gasPrice = await web3.eth.getGasPrice(function (error, result) {
+            return result;
+          });
+          console.log(gasPrice);
+          return gasPrice;
+
+          const signedTx = await web3.eth.accounts.signTransaction(
+            {
+              to: decoded.address,
+              value: 0x0,
+              gas: "21000",
+            },
+            "0x" + process.env.HW_FAUCET_PRIVATE_KEY
+          ); // 이부분은 로컬이라 각 Ganache 두번째 계정 PK env에 넣어주시면 됩니다~
+
+          console.log(signedTx);
+
+          //서명한 트랜잭션 전송
+          await web3.eth
+            .sendSignedTransaction(signedTx.rawTransaction)
+            .then(function (receipt) {
+              console.log(receipt);
+            })
+            .catch(function (error) {
+              return res
+                .status(404)
+                .json({ message2: "Can’t execute request" });
+            });
 
           //토큰 전송 후 DB 업데이트(토큰 잔액)
           var SenderTokenBalance = await Contract20.methods
@@ -255,8 +293,6 @@ const transfer20 = async (req, res) => {
   } else {
     return res.status(404).json({ message: "invalid access token" });
   }
-
-  // const loginIdSearch = await User.findOne({ where: { login_id : user_id } });
 };
 
 exports.userInfo = userInfo;
