@@ -1,6 +1,8 @@
+
 const { sequelize } = require("../models");
 const db = require("../models");
 const Post = require("../models/post");
+
 
 db.Post = Post;
 Post.init(sequelize);
