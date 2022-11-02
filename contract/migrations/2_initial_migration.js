@@ -1,3 +1,4 @@
+
 const SevenZ20Token = artifacts.require("SevenZtoken");
 const fs = require("fs");
 
