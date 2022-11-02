@@ -8,10 +8,10 @@ router.get("/", marketControllers.getNftLists);
 
 router.post("/mint", marketControllers.mintNft);
 
-router.get("/:tid", marketControllers.detailNft);
+router.get("/:nid", marketControllers.detailNft);
 
-router.post("/:tid/sell", marketControllers.sellNft);
+router.post("/:nid/sell", marketControllers.sellNft);
 
-router.post("/:tid/buy", marketControllers.buyNft);
+router.post("/:nid/buy", marketControllers.buyNft);
 
 module.exports = router;

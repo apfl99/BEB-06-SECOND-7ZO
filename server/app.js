@@ -4,16 +4,16 @@ const routes = require("./routes");
 const PORT = 3001; // 5000번 포트 : KT 와이파이 포트랑 겹칠 수 있어서 수정
 const app = express();
 
-const { sequelize } = require('./models'); // require('./models/index.js')와 같음 - index.js는 require 시 이름 생략 가능 
+const { sequelize } = require("./models"); // require('./models/index.js')와 같음 - index.js는 require 시 이름 생략 가능
 
-
-sequelize.sync({force: false}) // 서버 실행 시 MySQL과 연동되도록 함, force: true면 서버 실행 시 마다 테이블을 재생성, 테이블을 잘못 만든 경우에 true로 설정
-    .then(() => {
-        console.log('DB connection Success!!');
-    })
-    .catch((err) => {
-        console.error(err);
-    });
+sequelize
+  .sync({ force: false }) // 서버 실행 시 MySQL과 연동되도록 함, force: true면 서버 실행 시 마다 테이블을 재생성, 테이블을 잘못 만든 경우에 true로 설정
+  .then(() => {
+    console.log("DB connection Success!!");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 //외부 API를 사용하기 위한 CORS 추가
 const cors = require("cors");
@@ -44,7 +44,6 @@ app.use(myLogger);
 //     stacktrace: err.toString(),
 //   });
 // });
-
 
 app.use(bodyParser.json());
 
