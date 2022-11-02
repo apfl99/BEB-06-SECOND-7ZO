@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const { sequelize } = require("../models");
 const db = require("../models");
 const NFT = require("../models/nft");
@@ -13,16 +12,6 @@ const getNftLists = async (req, res) => {
   nfts.forEach((element) => {
     nftArr.push(element.dataValues);
   });
-=======
-const db = require("../models");
-const NFT = require("../models/nft");
-db.NFT = NFT;
-
-const getNftLists = async (req, res) => {
-  const nfts = await NFT.findAll({
-    attributes: ["token_id", "tx_hash", "token_uri", "price", "isSelling"],
-  });
->>>>>>> c197964 (stash)
 };
 
 const mintNft = (req, res) => {};

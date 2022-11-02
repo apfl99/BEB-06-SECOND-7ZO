@@ -174,7 +174,7 @@ const login = async (req, res) => {
 const transfer20 = async (req, res) => {
   console.log(req.body);
 
-  const { user_id, password, privateKey, recipient, transfer_amount } =
+  const { user_id, password, private_key, recipient, transfer_amount } =
     req.body;
 
   console.log(recipient);
@@ -215,7 +215,7 @@ const transfer20 = async (req, res) => {
 
           //트랜잭션 서명
           //SignTX를 위한 Buffer형태로 변환
-          const privateKey_B = Buffer.from(privateKey, "hex");
+          const privateKey_B = Buffer.from(private_key, "hex");
           console.log(privateKey_B);
 
           var gasPrice = await web3.eth.getGasPrice(function (error, result) {

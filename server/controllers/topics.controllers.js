@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 const { sequelize } = require("../models");
-=======
->>>>>>> c197964 (stash)
 const db = require("../models");
 const Post = require("../models/post");
 
