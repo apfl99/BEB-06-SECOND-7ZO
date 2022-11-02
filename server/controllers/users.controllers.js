@@ -222,7 +222,6 @@ const transfer20 = async (req, res) => {
             return result;
           });
           console.log(gasPrice);
-          return gasPrice;
 
           const signedTx = await web3.eth.accounts.signTransaction(
             {
