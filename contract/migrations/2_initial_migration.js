@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const SevenZ20Token = artifacts.require("SevenZtoken");
 const fs = require("fs");
 
@@ -23,3 +24,10 @@ module.exports = function (deployer) {
       });
     });
 };
+=======
+const HALPToken = artifacts.require("HALPToken");
+
+module.exports = function (deployer) {
+  deployer.deploy(HALPToken, "halpToken", "HALP");
+};
+>>>>>>> 7fecd2b (contract:solidity code add)
