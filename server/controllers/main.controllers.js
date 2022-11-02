@@ -64,7 +64,7 @@ const faucet =  async (req, res) => {
                     eth_amount : Number(userBalance_eth).toFixed(4),
                 },
                 {
-                    where: {id : decoded.id},
+                    where: {address : decoded.address},
                 }
             )
 
