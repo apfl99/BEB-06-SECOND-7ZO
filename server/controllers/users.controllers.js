@@ -11,7 +11,7 @@ require('dotenv').config();
 
 const Web3 = require('web3');
 const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545')); // 가나슈와 연동(로컬)
-
+const Tx = require('ethereumjs-tx').Transaction;
 
 //Truffle로 배포한 컨트랙 정보 읽어오기
 // 선행 작업 : 터미널에서 truffle --reset
@@ -178,9 +178,9 @@ const login =  async (req, res) => {
 const transfer20 = async (req, res) => {
     console.log(req.body);
 
-    const {user_id, password, privateKey, recipient, transfer_amount} = req.body;
+    const {user_id, password, private_key, recipient, transfer_amount} = req.body;
 
-    console.log(recipient)
+    
     //recipient가 유효한 계정인지
     const recipientSearch = await User.findOne({ where: { login_id : recipient } });
     if(recipientSearch == null) {
@@ -213,34 +213,58 @@ const transfer20 = async (req, res) => {
 
                 // 토큰 전송 트랜잭션 발생 : (토큰 수신자 주소, 전송 토큰 양) 인자, send를 통해 트랜잭션 발생(이때, erc20.sol에 따라 토큰 보유자만 전송 가능)
                 
-                //트랜잭션 서명
-                //SignTX를 위한 Buffer형태로 변환
-                const privateKey_B = Buffer.from(privateKey,'hex');
-                console.log(privateKey_B)
-
+                // 우선 사용자가 해당 트랜잭션을 사용할 가스비가 있는 지 확인
+                //네트워크 가스비 책정
                 var gasPrice = await web3.eth.getGasPrice(function(error, result) {  
                     return result;
                 });
-                console.log(gasPrice)
-                return
 
-                const signedTx = await web3.eth.accounts.signTransaction({
-                    to : decoded.address,
-                    value : 0x0,
-                    gas : '21000'
-                }, "0x" + process.env.HW_FAUCET_PRIVATE_KEY) // 이부분은 로컬이라 각 Ganache 두번째 계정 PK env에 넣어주시면 됩니다~
+                // sender의 이더 조회
+                var balance = await web3.eth.getBalance(decoded.address);
 
-                console.log(signedTx)
+                console.log(gasPrice, balance);
 
-                //서명한 트랜잭션 전송
-                await web3.eth.sendSignedTransaction(signedTx.rawTransaction)
+                // sender가 충분한 가스비가 없을 경우
+                if(parseInt(gasPrice) > parseInt(balance)) {
+                    return res.status(404).json({ message2: "Can’t execute request"})
+                }
+
+                //SignTX를 위한 Buffer형태로 변환
+                const privateKey = private_key.substr(2);
+                console.log(privateKey);
+                const privateKey_B = Buffer.from(privateKey,'hex');
+
+                //컨트랙에서 넌스값 구하기
+                const accountNonce = '0x' + (await web3.eth.getTransactionCount(decoded.address)).toString(16); 
+
+                //트랜잭션 데이터 생성
+                const rawTx =
+                {
+                    nonce: accountNonce,
+                    from: decoded.address,
+                    to: DEPLOYED_ADDRESS, // 컨트랙에게 전송
+                    gasPrice: web3.utils.toHex(gasPrice),
+                    gasLimit: 500000,
+                    value: '0x0',
+                    // 컨트랙 함수 실행
+                    data: Contract20.methods.transfer(recipientAddress, transfer_amount).encodeABI()
+                }; 
+
+                // 트랜잭션 생성 및 서명 
+                var tx = new Tx(rawTx);
+                tx.sign(privateKey_B);
+                var serializedTx = '0x' + tx.serialize().toString('hex');
+
+                var txHash;
+                // 서명 및 전송
+                await web3.eth.sendSignedTransaction(serializedTx.toString('hex'))
                 .then(function (receipt) {
-                    console.log(receipt)
+                    console.log(receipt.transactionHash)
+                    txHash = receipt.transactionHash;
                 })
                 .catch(function (error) {
-                    return res.status(404).json({ message2: "Can’t execute request"})
+                    console.log(error)
                 })
-
 
                 //토큰 전송 후 DB 업데이트(토큰 잔액)
                 var SenderTokenBalance = await Contract20.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
@@ -271,7 +295,7 @@ const transfer20 = async (req, res) => {
                     }
                 )
 
-                return res.status(200).json({message: "Transfer success", data : {tx : receipt.transactionHash}});
+                return res.status(200).json({message: "Transfer success", data : {tx : txHash}});
                 
             } catch(e) {
                 console.log("Invaild TX")
