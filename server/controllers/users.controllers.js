@@ -14,7 +14,8 @@ const web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:7545'));
 
 
 //Truffle로 배포한 컨트랙 정보 읽어오기
-//배포시 ABI, Address 파일 형태로 저장하도록 했습니다! -> contract/2_initial_migration.js 확인하시면 됩니다!
+// 선행 작업 : 터미널에서 truffle --reset
+//로컬에서 배포시 Address가 다 다르기 때문에 ABI, Address 파일 형태로 저장하도록 했습니다! -> contract/2_initial_migration.js 확인하시면 됩니다!
 const fs = require('fs');
 var DEPLOYED_ABI = JSON.parse(fs.readFileSync('../contract/20deployedABI', 'utf8'));
 var DEPLOYED_ADDRESS = fs.readFileSync('../contract/20deployedAddress', 'utf8').replace(/\n|\r/g, "");
@@ -256,10 +257,6 @@ const transfer20 = async (req, res) => {
     else {
         return res.status(404).json({message: "invalid access token"})
     }
-
-
-    // const loginIdSearch = await User.findOne({ where: { login_id : user_id } });
-
     
 
 
