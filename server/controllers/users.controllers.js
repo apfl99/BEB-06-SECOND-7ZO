@@ -240,12 +240,10 @@ const transfer20 = async (req, res) => {
             }
           );
 
-          return res
-            .status(200)
-            .json({
-              message: "Transfer success",
-              data: { tx: receipt.transactionHash },
-            });
+          return res.status(200).json({
+            message: "Transfer success",
+            data: { tx: receipt.transactionHash },
+          });
         } catch (e) {
           console.log("Invaild TX");
           console.log(e);
