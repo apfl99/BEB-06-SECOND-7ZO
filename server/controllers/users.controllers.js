@@ -199,7 +199,7 @@ const transfer20 = async (req, res) => {
           if(err) {
             return res.status(404).json({ message: "invalid access token"})
           } else { // 인증 완료
-            
+
             //Transfer
             try {
                 // 이부분은 테스트를 위한 서버 첫번째 계정에서 특정 계정으로 ERC20토큰을 보내는 로직입니다.
@@ -209,8 +209,11 @@ const transfer20 = async (req, res) => {
                 // await Contract20.methods.transfer(decoded.address,100).send({from: serverAccount});
                 // var tokenBalance = await Contract20.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
                 // console.log(tokenBalance)
-                
 
+                const tokenBalanceCheck = await Contract20.methods.balanceOf(decoded.address).call()
+                if(tokenBalanceCheck < transfer_amount) {
+                    return res.status(404).json({ message2: "Can’t execute request"})
+                }
                 // 토큰 전송 트랜잭션 발생 : (토큰 수신자 주소, 전송 토큰 양) 인자, send를 통해 트랜잭션 발생(이때, erc20.sol에 따라 토큰 보유자만 전송 가능)
                 
                 // 우선 사용자가 해당 트랜잭션을 사용할 가스비가 있는 지 확인
