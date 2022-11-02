@@ -21,7 +21,9 @@ const main = async (req, res) => {
   const topics = await Post.findAll({
     attributes: ["title", "img_url", "content", "created_at"],
   });
-  topicsArr.push(topics);
+  topics.forEach((element) => {
+    topicsArr.push(element.dataValues);
+  });
   res.status(200).send(topics);
 };
 

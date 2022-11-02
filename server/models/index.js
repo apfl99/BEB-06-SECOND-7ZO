@@ -1,13 +1,18 @@
-const Sequelize = require('sequelize');
-const NFT = require('./nft');
-const Post = require('./post');
-const User = require('./user');
+const Sequelize = require("sequelize");
+const NFT = require("./nft");
+const Post = require("./post");
+const User = require("./user");
 
-const env = 'development';
-const config = require('../config/config')[env];
+const env = "development";
+const config = require("../config/config")[env];
 const db = {};
 
-const sequelize = new Sequelize(config.database, config.username, config.password, config);
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  config
+);
 
 db.sequelize = sequelize;
 
