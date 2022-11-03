@@ -206,7 +206,7 @@ const transfer20 = async (req, res) => {
                 // 서버는 네트워크에 등록되어 있어 서명 X(Ganache에서 가지고 있음)
                 // const accounts = await web3.eth.getAccounts();
                 // const serverAccount = accounts[0];
-                // await Contract20.methods.transfer(decoded.address,100).send({from: serverAccount});
+                // await Contract20.methods.transfer(decoded.address,500).send({from: serverAccount});
                 // var tokenBalance = await Contract20.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
                 // console.log(tokenBalance)
 

@@ -9,6 +9,9 @@ module.exports = class NFT extends Sequelize.Model { // User 모델을 만들고
                 autoIncrement: true, // autoIncrement : MYSQL의 AUTO_INCREMENT
                 primaryKey: true, // primaryKey: MySQL의 PRIMARY KEY
             },
+            user_id: {
+                type: Sequelize.INTEGER, 
+            },
             token_id: {
                 type: Sequelize.INTEGER, 
             },
