@@ -13,8 +13,8 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
     IERC20 token;
     uint256 nftPrice;
 
-    constructor() ERC721("MyNFTs", "MNFT") {
-        nftPrice = 100e18;
+    constructor() ERC721("SevenZ721Token", "SZ721T") {
+        nftPrice = 100;
     }
 
     // 등록한 ERC20 토큰으로 NFT 구매
@@ -23,7 +23,7 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
         onlyOwner
         returns (uint256)
     {
-        require(token.balanceOf(recipient) > nftPrice);
+        require(token.balanceOf(recipient) >= nftPrice);
 
         token.transferFrom(recipient, msg.sender, nftPrice);
 
@@ -40,5 +40,10 @@ contract NFTLootBox is ERC721URIStorage, Ownable {
         require(tokenAddress != address(0x0));
         token = IERC20(tokenAddress);
         return true;
+    }
+
+    //TokenId 조회
+    function getTokenId() public view returns (uint256) {
+        return _tokenIds.current();
     }
 }
