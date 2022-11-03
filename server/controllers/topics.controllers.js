@@ -1,8 +1,6 @@
-
 const { sequelize } = require("../models");
 const db = require("../models");
 const Post = require("../models/post");
-
 
 db.Post = Post;
 Post.init(sequelize);
@@ -34,3 +32,11 @@ module.exports = {
   updateTopic,
   deleteTopic,
 };
+
+/*
+
+  let hashedPassword;
+  bcrypt.hash(password, 12) : 해싱할 비밀번호를 전달하여 수신요청에서 추출, 솔트 값
+  bcrypt.compare(password, password) : 해싱값 비교(해당 평문을 해쉬하면 위에서 언급한 hash값과 같은지), 비교할 평문값
+
+*/
