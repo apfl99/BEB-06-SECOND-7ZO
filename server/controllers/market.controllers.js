@@ -3,6 +3,7 @@ const { sequelize } = require("../models");
 const db = require("../models");
 const NFT = require("../models/nft");
 db.NFT = NFT;
+
 NFT.init(sequelize);
 const User = require('../models/user');
 db.User = User;
@@ -54,6 +55,7 @@ const getNftLists = async (req, res) => {
   nfts.forEach((element) => {
     nftArr.push(element.dataValues);
   });
+  return res.status(200).send(nftArr);
 };
 
 const mintNft = async (req, res) => {
@@ -152,11 +154,14 @@ const mintNft = async (req, res) => {
 };
 
 const detailNft = async (req, res) => {
-  let id = req.body.nid;
+  let id = req.params.nid;
   const nft = await NFT.findOne({
     where: { id },
   });
-  res.status(200).send(nft);
+  if (id === null) {
+    return res.status(404).json({ data: null });
+  }
+  return res.status(200).send(nft);
 };
 
 const sellNft = (req, res) => {};
