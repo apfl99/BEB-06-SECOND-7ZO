@@ -10,6 +10,7 @@ import { persistReducer,
 import storage from 'redux-persist/lib/storage';
 import accountSlice from './slicer/accountSlice';
 import postSlice from './slicer/postSlice';
+import { persistStore } from 'redux-persist';
 //import accountReducer from './accountReducer';
 //import postReducer from './postReducer';
 
@@ -35,4 +36,8 @@ const store = configureStore({
     }),
   });
 
-export default store;
+  const persistor = persistStore(store);
+  const stores={
+    store,persistor
+  };
+export default  stores;
