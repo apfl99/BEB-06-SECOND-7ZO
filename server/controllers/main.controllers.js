@@ -19,25 +19,12 @@ require("dotenv").config();
 const main = async (req, res) => {
   let topicsArr = [];
   const topics = await Post.findAll({
-    attributes: ["title", "img_url", "content", "created_at"],
+    attributes: ["title", "img_url", "content", "created_at", "user_id"],
   });
   topics.forEach((element) => {
     topicsArr.push(element.dataValues);
   });
   res.status(200).send(topics);
-};
-
-// 글 작성
-const newTopic = async (req, res) => {
-  const { title, content, img_url } = req.body;
-
-  let info = {
-    title: title,
-    content: content,
-    img_url: img_url,
-  };
-  const topic = await Post.create(info);
-  res.status(200).send(topic);
 };
 
 const faucet = async (req, res) => {
@@ -53,7 +40,7 @@ const faucet = async (req, res) => {
         return res.status(404).json({ message: "invalid access token" });
       } else {
         // 인증 완료
-
+        console.log(decoded);
         //Faucet
         //트랜잭션 서명
         const signedTx = await web3.eth.accounts.signTransaction(
@@ -100,6 +87,4 @@ const faucet = async (req, res) => {
   }
 };
 
-exports.main = main;
-exports.newTopic = newTopic;
-exports.faucet = faucet;
+module.exports = { main, faucet };

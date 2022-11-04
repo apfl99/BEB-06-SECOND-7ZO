@@ -13,6 +13,9 @@ module.exports = class Post extends Sequelize.Model {
           autoIncrement: true, // autoIncrement : MYSQL의 AUTO_INCREMENT
           primaryKey: true, // primaryKey: MySQL의 PRIMARY KEY
         },
+        user_id: {
+          type: Sequelize.INTEGER,
+        },
         title: {
           type: Sequelize.STRING(255), // STRING : MySQL의 VARCHAR
         },

@@ -118,10 +118,10 @@ const join = async (req, res) => {
 
     //jwt
     var accessToken = jwt.sign(userData, process.env.ACCESS_SECRET, {
-      expiresIn: "5m",
+      expiresIn: "30m",
     });
     var refreshToken = jwt.sign(userData, process.env.REFRESH_SECRET, {
-      expiresIn: "5m",
+      expiresIn: "30m",
     });
 
     res.cookie("refreshToken", refreshToken);
