@@ -1,11 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PURGE } from "redux-persist";
 const initialState= { 
-  id: null,
+  login_id: null,
   nickname: null,
   isLogin: false,
   accessToken:null,
-  walletAddress:null,
+  address:null,
+  eth_amount:null,
+  token_amount:null,
+  created_at:null,
 };
 
 const accountSlice = createSlice({
@@ -13,11 +16,14 @@ const accountSlice = createSlice({
   initialState,
   reducers: {
     login: (state, action) => {
-      state.id = action.payload.id;
+      state.login_id = action.payload.login_id;
       state.nickname = action.payload.nickname;
       state.isLogin = true;
       state.accessToken = action.payload.accessToken;
-      state.walletAddress = action.payload.walletAddress;
+      state.address = action.payload.address;
+      state.created_at = action.payload.created_at;
+      state.eth_amount = action.payload.eth_amount;
+      state.token_amount = action.payload.token_amount;
     },
     
   },

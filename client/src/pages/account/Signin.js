@@ -1,41 +1,56 @@
 
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { Button, message, Form, Input } from 'antd';
-import axios from "axios";
+import { Button, Form, Input } from 'antd';
+//import axios from "axios";
+import { logIn } from '../../api/apiindex';
 /*req
 {
 ”message” : “success”,
-”access_token”: “Token”(string)
+"data":{ user_id, password }
 }
 
 res
+{message: "success", accessToken : accessToken, userInfo : userData}
+userData  = { 
+        login_id: user_id,
+        nickname: nickname,
+        password: password,
+        address: "",
+        token_amount : 0,
+        eth_amount : 0 
+    }
 */
 function Signin() {
   const navigate=useNavigate();
   const dispatch=useDispatch();
-
-  const logIn=async ({userId,password})=>{
+  /** 로그인 함수*/
+  /*const logIn=async ({user_id,password})=>{
     try{
       const result = await axios({
-        method: "get",
+        method: "post",
         url: `http://localhost:3001/user/login`,
         headers: {
           Accpet: "application/json",
         },
         withCredentials: true,
-        data: { userId, password },
+        data: { user_id, password },
       });
-      const userInfo=result.data;
+      const response=result.data;
+      const userInfo={...response.userInfo,accessToken:response.accessToken};
+      console.log(userInfo);
       dispatch({type:"accountSlice/login",payload:userInfo});
     }catch(err){
-      message.error(`failed post${userId}     ,     ${password}`);
+      message.error(`failed post${user_id}     ,     ${password}`);
     }
+  };*/
+  /** form제출 성공시*/
+  const onFinish = async (values) => {
+    const userInfo = await logIn(values);
+    dispatch({type:"accountSlice/login",payload:userInfo});
+    navigate("/");
   };
-
-  const onFinish = (values) => {
-    logIn(values);
-  };
+  /** form제출 실패시*/
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
@@ -60,7 +75,7 @@ function Signin() {
     >
       <Form.Item
         label="UserID"
-        name="userId"
+        name="user_id"
         rules={[
           {
             required: true,

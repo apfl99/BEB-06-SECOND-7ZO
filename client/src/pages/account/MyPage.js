@@ -1,7 +1,9 @@
 import React, {  useState,useEffect } from "react";
 import { useSelector } from 'react-redux';
-import axios from "axios";
+import { userInfo } from "../../api/userapi";
+
 /*
+res
 {
 ”message” : “success” search,
 ”data” : {
@@ -9,9 +11,10 @@ import axios from "axios";
 ”postData” : Array(각 요소는 object형식),
 ”nftData” : Array(각 요소는 object형식)
 }} 
+
 */
 function MyPage() {
-  const [myInfo,setMyInfo]=useState({
+  const [myInfo,setMyInfo]=useState({//임시로 더미데이터 저장중
     userData:{
       login_id:"asdf",
       nickname:"dummyman",
@@ -54,33 +57,25 @@ function MyPage() {
       isSelling:	1,
     }],
   });
-  const uid = useSelector((state) =>{
-    return state.account.id;
+  const {login_id,isLogin} = useSelector((state) =>{
+    return state.account;
   });
-  /*mypage 랜더시에 userid로 해당 post의 정보를 불려옴
+  /*mypage 랜더시에 userid로 해당 post의 정보를 불려옴*/
     useEffect(() => {
 
-    const fetchData = async () => {
-      try{
-        const result = await axios({
-          method: "get",
-          url: `http://localhost:3001/user/${uid}`,
-          headers: {
-            Accpet: "application/json",
-          },
-          withCredentials: true,
-        });
-        const Info=result.data;
-        setMyInfo(Info);
-      }catch(err){
-        message.error(`failed post`);
-      }
-    };
+     const fetchData = async () => {
+        const info=await userInfo(login_id);
+        setMyInfo(info);
+      };
 
     fetchData();
-  }, []);*/
+  }, [login_id]);
+
   return (
+    
     <div > 
+      {!isLogin?<div > 로그인을 하십쇼</div>:
+      <div>
       <div style={{border:'1px solid red',marginTop:'3px'}}>{/*userInfo */}
         <p>{myInfo.userData.login_id}</p>
         <p>{myInfo.userData.nickname}</p>
@@ -117,6 +112,7 @@ function MyPage() {
           );
         })}
       </div>
+      </div>}
     </div>
   )
 }
