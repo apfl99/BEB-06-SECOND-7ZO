@@ -158,10 +158,22 @@ const detailNft = async (req, res) => {
   const nft = await NFT.findOne({
     where: { id },
   });
-  if (id === null) {
+  // console.log(nft.dataValues);
+  const userData = await User.findOne({
+    where : {id : nft.dataValues.user_id}
+  })
+  var owner = userData.dataValues;
+  
+  delete owner.password;
+  delete owner.id;
+  if (nft === null) {
     return res.status(404).json({ data: null });
   }
-  return res.status(200).send(nft);
+  return res.status(200).json({
+    message : "success",
+    nftData : nft,
+    nftOwnerData : owner
+  })
 };
 
 const sellNft = (req, res) => {};
