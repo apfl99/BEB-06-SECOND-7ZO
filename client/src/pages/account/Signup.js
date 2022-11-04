@@ -1,29 +1,41 @@
 import { useDispatch } from 'react-redux';
-import { Button, Form, Input,message } from 'antd';
-import axios from "axios";
+import { Button, Form, Input,Modal } from 'antd';
 
+import { signUp } from '../../api/userapi';
+
+/*req
+{
+”message” : “success”,
+"data":{ user_id, password ,nickname}
+}
+
+res
+{message: "success", accessToken : accessToken, userInfo : userData}
+userData  = { 
+        login_id: user_id,
+        nickname: nickname,
+        password: password,
+        address: "",
+        token_amount : ,
+        eth_amount :  
+        privateKey :
+    }
+*/
 function Signup() {
     const dispatch=useDispatch();
 
-    const signUp=async ({userId,password,nickname})=>{
-        try{
-        const result = await axios({
-            method: "get",
-            url: `http://localhost:3001/user/login`,
-            headers: {
-            Accpet: "application/json",
-            },
-            withCredentials: true,
-            data: { userId, password ,nickname},
+    
+    
+    const success = (message) => {
+        Modal.success({
+          content: `회원가입에 성공 했습니다. 아래는 privateKey로 서명에 필요하니 잊어버리지 마십쇼\n ${message}`,
         });
-        const userInfo=result.data;
+      };
+    const onFinish = async (values) => {
+        const userInfo=await signUp(values);
         dispatch({type:"accountSlice/login",payload:userInfo});
-        }catch(err){
-        message.error(`failed post${userId}     ,     ${password}`);
-        }
-    };
-    const onFinish = (values) => {
-        signUp(values);
+        success(userInfo.privateKey);
+
       };
       const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -47,7 +59,7 @@ function Signup() {
         autoComplete="off"
         >
         <Form.Item
-            name="userId"
+            name="user_id"
             label="userId"
             rules={[
             
