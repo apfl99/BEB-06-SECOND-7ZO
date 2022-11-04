@@ -5,6 +5,8 @@ const Post = require("../models/post");
 db.Post = Post;
 Post.init(sequelize);
 
+
+
 const getTopic = async (req, res) => {
   let id = req.params.pid;
   const topic = await Post.findOne({ where: { id } });

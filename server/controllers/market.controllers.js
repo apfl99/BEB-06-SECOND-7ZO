@@ -163,7 +163,7 @@ const sellNft = (req, res) => {};
 
 const buyNft = (req, res) => {};
 
-
+//approve
 async function approve(owner, private_key) {
   //네트워크 가스비 책정
   var gasPrice = await web3.eth.getGasPrice(function(error, result) {  
@@ -219,6 +219,7 @@ async function approve(owner, private_key) {
     })
 }
 
+// nft 민팅 erc20 토큰 Set
 async function setToken() {
   // 서버 계정 : 721 contract 배포자(onlyOwner)
   const accounts = await web3.eth.getAccounts();
@@ -277,6 +278,7 @@ async function setToken() {
     })
 }
 
+//minting
 async function minting(recipient, imgUrl, name, description) {
   // 서버 계정 : 721 contract 배포자(onlyOwner)
   const accounts = await web3.eth.getAccounts();
