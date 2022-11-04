@@ -237,6 +237,8 @@ const transfer20 = async (req, res) => {
             return result;
           });
 
+          // sender의 이더 조회
+          var balance = await web3.eth.getBalance(decoded.address);
           console.log(gasPrice, balance);
 
           // sender가 충분한 가스비가 없을 경우
