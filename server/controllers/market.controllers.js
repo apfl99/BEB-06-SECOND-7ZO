@@ -52,6 +52,11 @@ const getNftLists = async (req, res) => {
   const nfts = await NFT.findAll({
     attributes: ["token_id", "tx_hash", "token_uri", "price", "isSelling"],
   });
+  if(nfts == null) {
+    return res.status(404).json({
+      message : "Can’t execute request"
+    })
+  }
   nfts.forEach((element) => {
     nftArr.push(element.dataValues);
   });
