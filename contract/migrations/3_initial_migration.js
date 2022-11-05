@@ -1,3 +1,4 @@
+
 const SevenZ721Token = artifacts.require("NFTLootBox");
 const fs = require("fs");
 
@@ -23,3 +24,4 @@ module.exports = function (deployer) {
       });
     });
 };
+
