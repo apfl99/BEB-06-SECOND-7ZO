@@ -1,36 +1,29 @@
 import React, {  useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
-import { message,Pagination ,Button} from 'antd';
+import { getallposts } from "../../api/Postapi";
+import { Pagination ,Button} from 'antd';
 
 function Home() {
   const [posts,setPosts]=useState([]);
   const [pageInfo, setPageInfo] = useState({limit:10,page:1});
   const offset = (pageInfo.page - 1) * pageInfo.limit;
   const navigate=useNavigate();
+
   const pageSelect = (page,limit) => {
     const newInfo={page,limit};
 
     setPageInfo(newInfo);
   };
+  const clickPost =(pid)=>{
+    navigate(`detail/${pid}`);
+  }
+
   /*main 랜더시에  post리스트를 불려옴*/
     useEffect(() => {
 
     const fetchData = async () => {
-      try{
-        const result = await axios({
-          method: "get",
-          url: `https://jsonplaceholder.typicode.com/posts`,
-          headers: {
-            Accpet: "application/json",
-          },
-          withCredentials: true,
-        });
-        const postList=result.data;
-        setPosts(postList);
-      }catch(err){
-        message.error(`failed post`);
-      }
+      const postlist=await getallposts();
+      setPosts(postlist);
     };
 
     fetchData();
@@ -45,12 +38,14 @@ function Home() {
       
       <Button type="button" onClick={()=>navigate('/create')}>create</Button>
       <main>
-        {posts.slice(offset, offset + pageInfo.limit).map(({ id, title, body }) => (
-          <article key={id}>
+        {posts.slice(offset, offset + pageInfo.limit).map(({ id, title, content,img_url,created_at }) => (
+          <article key={id} style={{border:"1px solid red",cursor:"pointer"}} onClick={()=>clickPost(id)}>
             <h3>
               {id}. {title}
             </h3>
-            <p>{body}</p>
+            <p>{content}</p>
+            <p>{img_url}</p>
+            <p>{created_at}</p>
           </article>
         ))}
       </main>

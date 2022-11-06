@@ -1,7 +1,8 @@
 const { sequelize } = require("../models");
 const db = require("../models");
 const Post = require("../models/post");
-
+const Web3 = require("web3");
+const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545")); // 가나슈와 연동(로컬)
 db.Post = Post;
 Post.init(sequelize);
 

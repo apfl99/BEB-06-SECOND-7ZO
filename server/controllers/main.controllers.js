@@ -19,7 +19,7 @@ require("dotenv").config();
 const main = async (req, res) => {
   let topicsArr = [];
   const topics = await Post.findAll({
-    attributes: ["title", "img_url", "content", "created_at", "user_id"],
+    attributes: ["title", "img_url", "content", "created_at", "user_id","id"],
   });
   topics.forEach((element) => {
     topicsArr.push(element.dataValues);
