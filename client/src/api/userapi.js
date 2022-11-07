@@ -114,3 +114,30 @@ export const userInfo = async (uid) => {
       return null;
     }
   };
+  /*
+GET요청
+req
+{ 
+  private_key, 
+  recipient, 
+  transfer_amount
+}
+로그인된 id를 통해 유저 정보를 리턴
+*/
+export const transfer20 = async ({uid,private_key, recipient, transfer_amount,accessToken}) => {
+  try{
+    const result = await axios({
+      method: "post",
+      url: `http://localhost:3001/user/${uid}/transfer_20`,
+      headers: {
+        Accpet: "application/json",
+        authorization: `Bearer ${accessToken}`,
+      },
+      withCredentials: true,
+      data: { private_key, recipient, transfer_amount},
+    });
+    message.error(`success transfer`);
+  }catch(err){
+    message.error(`failed get`);
+  }
+};

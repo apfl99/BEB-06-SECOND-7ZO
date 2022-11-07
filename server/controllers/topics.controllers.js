@@ -3,11 +3,10 @@ const { sequelize, User } = require("../models");
 const db = require("../models");
 const Post = require("../models/post");
 
+const Web3 = require("web3");
+const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545")); // 가나슈와 연동(로컬)
 db.Post = Post;
 Post.init(sequelize);
-
-const Web3 = require("web3");
-const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:7545"));
 
 const fs = require("fs");
 var DEPLOYED_ABI = JSON.parse(
@@ -62,8 +61,7 @@ const newTopic = async (req, res) => {
     .balanceOf(serverAccounts[0])
     .call();
 
-  console.log(UserTokenBalance);
-  console.log(ServerTokenBalance);
+  await user.update({ token_amount: UserTokenBalance });
 
   res.status(200).send(topic);
 };

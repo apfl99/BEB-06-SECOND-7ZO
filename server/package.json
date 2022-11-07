@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "daemon": "pm2 start daemon.js --watch --no-daemon"
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +24,9 @@
     "ipfs-api": "^26.1.2",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "node-cron": "^3.0.2",
     "nodemon": "^2.0.20",
+    "pm2": "^5.2.2",
     "sequelize": "^5.22.3",
     "truffle": "^5.6.3",
     "web3": "^1.8.0",
