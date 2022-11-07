@@ -748,24 +748,14 @@
   "ast": {
     "absolutePath": "project:/contracts/Migrations.sol",
     "exportedSymbols": {
-      "Migrations": [
-        2054
-      ]
+      "Migrations": [2054]
     },
     "id": 2055,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 1998,
-        "literals": [
-          "solidity",
-          ">=",
-          "0.4",
-          ".22",
-          "<",
-          "0.9",
-          ".0"
-        ],
+        "literals": ["solidity", ">=", "0.4", ".22", "<", "0.9", ".0"],
         "nodeType": "PragmaDirective",
         "src": "33:32:13"
       },
@@ -777,9 +767,7 @@
         "contractKind": "contract",
         "fullyImplemented": true,
         "id": 2054,
-        "linearizedBaseContracts": [
-          2054
-        ],
+        "linearizedBaseContracts": [2054],
         "name": "Migrations",
         "nameLocation": "76:10:13",
         "nodeType": "ContractDefinition",
@@ -1145,9 +1133,7 @@
               "src": "439:109:13",
               "statements": [
                 {
-                  "assignments": [
-                    2041
-                  ],
+                  "assignments": [2041],
                   "declarations": [
                     {
                       "constant": false,
@@ -1397,8 +1383,8 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0xAE04867f13759D916a6942615f10A0EEA1A59D2c",
-      "transactionHash": "0x9ffd0609cb6bd3699543044a83573d4acc224462c642763980b2655f95db1794"
+      "address": "0xb9f6eD8778455A862A9894689F4b9608A9B53Ba9",
+      "transactionHash": "0x9bff677ee463d5aef9ee124d3bf94d4a4ef91aea77f52db27b2caa5a8641a370"
     }
   },
   "schemaVersion": "3.4.10",
