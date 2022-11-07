@@ -8,15 +8,25 @@ import {
 } from 'antd';
 import { mintingNFT } from '../../api/nftapi';
 import { useSelector } from 'react-redux';
+import "../../assets/styles/mintTable.css";
+import React, { useState, useEffect } from "react";
 
 function MintNFT() {
   const accessToken = useSelector((state) =>{
     return state.account.accessToken;
   });
+
+  
+
   const onFinish = async ({description,name,upload,privateKey}) => {
     const imageUrl="https://"+upload[0].response.value.cid+".ipfs.nftstorage.link/"+upload[0].name;
     const nft=await mintingNFT(name, description,imageUrl,privateKey,accessToken);
-    message.success(`NFT create successfully.\n NFT Id : ${nft.token_id}\nTokenBalance : ${nft.token_amount}`);
+    
+    message.success(`NFT create successfully.\n NFT Id : ${nft.data.token_id}\nTokenBalance : ${nft.data.token_amount}`);
+    setTimeout(function() {
+      window.location.href='/mypage';
+    }, 1000);
+    
   };
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -26,8 +36,9 @@ function MintNFT() {
     return e?.fileList;
   };
   return ( 
-    <div>
-      <h1>Create Your NFT</h1>
+    <div className='container'>
+      <h1 className='header'>Create Your NFT</h1>
+      <br></br>
       <Form
         name="validate_other"
         onFinish={onFinish} 
@@ -38,6 +49,12 @@ function MintNFT() {
           label="Upload"
           valuePropName="fileList"
           getValueFromEvent={normFile}
+          rules={[
+            {
+              required: true,
+              message: 'Please input Image File!'
+            },
+          ]}
         >
           <Upload name="file" action='https://api.nft.storage/upload' headers={{withCredentials:true,"Authorization":`Bearer ${process.env.REACT_APP_API_KEY}`}}  maxCount={1}>
             <Button icon={<UploadOutlined />}>Click to upload</Button>
@@ -54,6 +71,7 @@ function MintNFT() {
               whitespace: true,
             },
           ]}
+          className="pk"
         >
           <Input showCount maxLength={50}/>
         </Form.Item>
@@ -61,6 +79,7 @@ function MintNFT() {
         <Form.Item
           name="description"
           label="Description"
+          className='description'
           rules={[
             {
               required: true,
@@ -74,6 +93,7 @@ function MintNFT() {
         <Form.Item
           name="privateKey"
           label="PrivateKey"
+          className='pk'
           rules={[
             {
               required: true,
@@ -86,7 +106,8 @@ function MintNFT() {
         </Form.Item>
         {/*버튼 */}
         <Form.Item >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit"
+          className='mintBtn'>
             Mint
           </Button>
         </Form.Item>

@@ -74,7 +74,7 @@ const mintNft = async (req, res) => {
     
         jwt.verify(token, process.env.ACCESS_SECRET, async (err, decoded)=> {
           if(err) {
-            return res.status(404).json({ message1: "invalid access token"})
+            return res.status(404).json({ message: "invalid access token"})
           } else { // 인증 완료
 
             //Minting
@@ -82,7 +82,7 @@ const mintNft = async (req, res) => {
                 // Minting 비용 검사 : Minting Cost == 100 ERC20Token
                 const tokenBalanceCheck = await Contract20.methods.balanceOf(decoded.address).call()
                 if(tokenBalanceCheck < 100) { 
-                    return res.status(404).json({ message2: "Can’t execute request"})
+                    return res.status(404).json({ message: "Not Enough Token"})
                 }
 
                 //20 : allowance확인 : msg.sender(minting contract)가 sender(client)로부터 양도 받았는지
@@ -97,7 +97,7 @@ const mintNft = async (req, res) => {
                   
                   // 양도가 성공적으로 안되었을 경우
                   if(allowanceCheck < 100) {
-                    return res.status(404).json({ message2: "Can’t execute request"})
+                    return res.status(404).json({ message: "Allowance Error"})
                   }
                 }
 
@@ -135,13 +135,13 @@ const mintNft = async (req, res) => {
                 if(newNFT != null) {
                   return res.status(200).json({ message: "success", data : {token_id : newNFTData.token_id, token_amount : tokenBalance }})
                 } else {
-                  return res.status(404).json({ message2: "Can’t execute request"})
+                  return res.status(404).json({ message: "Minting Fail"})
                 }
 
             } catch(e) {
                 console.log("Invaild TX")
                 console.log(e)
-                return res.status(404).json({ message2: "Can’t execute request"})
+                return res.status(404).json({ message: "Invaild Tx"})
             }
 
 

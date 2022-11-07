@@ -16,6 +16,7 @@ res
 post을 생성함
 */
 export const mintingNFT= async (name, description,imgUrl,privateKey,accessToken)=>{
+  
     try{
       const result = await axios({
         method: "post",
@@ -26,11 +27,14 @@ export const mintingNFT= async (name, description,imgUrl,privateKey,accessToken)
         },
         withCredentials: true,
         data: { name, description,imgUrl ,privateKey},
-      });
+      })
+      .then((response) => {
+        console.log(response)
+      })
       
       return result.data;
     }catch(err){
-      message.error(`failed post`);
+      message.error(err.response.data.message);
       return null;
     }
 };
