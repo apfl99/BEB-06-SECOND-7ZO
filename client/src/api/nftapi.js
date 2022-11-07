@@ -28,13 +28,8 @@ export const mintingNFT= async (name, description,imgUrl,privateKey,accessToken)
         withCredentials: true,
         data: { name, description,imgUrl ,privateKey},
       })
-      .then((response) => {
-        console.log(response)
-      })
-      
-      return result.data;
+      message.success(`NFT create successfully.`);      
     }catch(err){
       message.error(err.response.data.message);
-      return null;
     }
 };

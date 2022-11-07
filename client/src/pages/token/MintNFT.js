@@ -20,9 +20,8 @@ function MintNFT() {
 
   const onFinish = async ({description,name,upload,privateKey}) => {
     const imageUrl="https://"+upload[0].response.value.cid+".ipfs.nftstorage.link/"+upload[0].name;
-    const nft=await mintingNFT(name, description,imageUrl,privateKey,accessToken);
+    await mintingNFT(name, description,imageUrl,privateKey,accessToken);
     
-    message.success(`NFT create successfully.\n NFT Id : ${nft.data.token_id}\nTokenBalance : ${nft.data.token_amount}`);
     setTimeout(function() {
       window.location.href='/mypage';
     }, 1000);

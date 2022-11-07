@@ -1,10 +1,15 @@
 import "../../assets/styles/MyPage.css";
 import React, {  useState,useEffect } from "react";
 import { useSelector } from 'react-redux';
-import {Button, Descriptions ,Collapse,Skeleton,Drawer,Form, Input} from 'antd';
+import {Image, Button, Descriptions ,Collapse,Skeleton,Drawer,Form, Input, Row, Col} from 'antd';
 import { userInfo } from "../../api/userapi";
 import { transfer20 } from "../../api/userapi";
 import { useNavigate } from "react-router-dom";
+
+import Container from 'react-bootstrap/Container';
+// import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
+
 
 const { Panel } = Collapse;
 
@@ -28,6 +33,8 @@ function MyPage() {
   const {login_id,isLogin,accessToken} = useSelector((state) =>{
     return state.account;
   });
+
+
 
   const showDrawer = () => {
     setOpen(true);
@@ -58,6 +65,8 @@ function MyPage() {
   const clickPost =(pid)=>{
     navigate(`../detail/${pid}`);
   }
+
+
 
 
   return (
@@ -96,19 +105,41 @@ function MyPage() {
           })}
         </Collapse>
 
-        <h1>My NFTs</h1>
-        <div style={{border:'1px solid red',marginTop:'3px'}}>{/*NFTList */}
-          {myInfo.nftData.map((nft)=>{
-            return(
-              <article key={nft.id} style={{border:'1px solid green',marginTop:'1px'}}>
-                <h3>
-                  {nft.id}. {nft.price}
-                </h3>
-                <p>{nft.token_uri}</p>
-              </article>
-            );
-          })}
+        {/*NFTList */}
+        <br></br>
+        <h1>My NFTs : {myInfo.nftData.length}</h1>
+        <div className="nftContainer">
+          <Row className="row" gutter={24}>
+            {myInfo.nftData.map(nft => {
+              var nftDetail;
+              
+              let xhr = new XMLHttpRequest;
+              xhr.open('GET', nft.token_uri,false);
+              // xhr.responseType = 'json';
+              xhr.onload = () => {
+                nftDetail = xhr.response;
+              }
+              xhr.send();
+              nftDetail = JSON.parse(nftDetail);
+              console.log(nftDetail)
+              
+              return(
+                
+                <Col span={6}> 
+                  <br></br>               
+                    <Image
+                    src={nftDetail.image}
+                    width={400}
+                    />
+                    <br></br>
+                    <h2>{nftDetail.name}</h2>
+                </Col>
+              );
+            })}
+          </Row>
         </div>
+          
+        
         {/*드로우 페이지 토큰 보내기에 사용됨 */}
         <Drawer
           title="Token 보내기"

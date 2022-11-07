@@ -8,11 +8,11 @@
 }
 
 .container {
-  width: 30%;
   display: inline-block;
   justify-content: center;
-  margin-left: 30%;
-  margin-right: 30%;
+  text-align: center;
+  margin-left: 40%;
+  margin-right: 40%;
   margin-top: 5%;
 }
 
@@ -55,5 +55,5 @@
     width: auto;
     height: 70px;
     padding: 10px 10px 10px 50px;
-    font-size: 32px;
+    font-size: 40px;
   }

@@ -20,3 +20,10 @@
 .transferBtn:hover {
     background-color: #0985f9;
 }
+
+.nftContainer {
+    margin-left: 2%;
+    margin-right: 2%;
+    background-color: rgb(91, 85, 85);
+    border-radius: 30px;
+}
