@@ -51,7 +51,7 @@ const newTopic = async (req, res) => {
   const userAccount = user.dataValues.address;
 
   await Contract20.methods
-    .transfer(userAccount, 1)
+    .transfer(userAccount, 10)
     .send({ from: serverAccounts[0] })
     .then((data) => console.log(data));
 
@@ -61,6 +61,9 @@ const newTopic = async (req, res) => {
   const ServerTokenBalance = await Contract20.methods
     .balanceOf(serverAccounts[0])
     .call();
+
+  console.log(UserTokenBalance);
+  console.log(ServerTokenBalance);
 
   res.status(200).send(topic);
 };

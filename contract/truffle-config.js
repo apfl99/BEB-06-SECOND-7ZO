@@ -5,6 +5,7 @@ module.exports = {
       port: 7545,
       network_id: "*",
     },
+
   },
   compilers: {
     solc: {
@@ -17,4 +18,5 @@ module.exports = {
       },
     },
   },
+
 };

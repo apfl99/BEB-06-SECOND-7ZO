@@ -1,0 +1,6 @@
+export { default as MyNFT } from './account/MyNFT'
+export { default as MyPost } from './account/MyPost'
+export { default as Pagebar } from './post/Pagebar'
+export { default as PostList } from './post/PostList'
+export { default as Footer } from './tabs/Footer'
+export { default as Navbar } from './tabs/Navbar'
