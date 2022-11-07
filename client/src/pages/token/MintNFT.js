@@ -4,13 +4,19 @@ import {
   Upload,
   Form,
   Input,
-  
+  message
 } from 'antd';
+import { mintingNFT } from '../../api/nftapi';
+import { useSelector } from 'react-redux';
 
 function MintNFT() {
-
-  const onFinish = (values) => {
-    console.log(values);
+  const accessToken = useSelector((state) =>{
+    return state.account.accessToken;
+  });
+  const onFinish = async ({description,name,upload,privateKey}) => {
+    const imageUrl="https://"+upload[0].response.value.cid+".ipfs.nftstorage.link/"+upload[0].name;
+    const nft=await mintingNFT(name, description,imageUrl,privateKey,accessToken);
+    message.success(`NFT create successfully.\n NFT Id : ${nft.token_id}\nTokenBalance : ${nft.token_amount}`);
   };
   const normFile = (e) => {
     console.log('Upload event:', e);
@@ -33,7 +39,7 @@ function MintNFT() {
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
-          <Upload name="image" action="/upload.do" listType="picture" maxCount={1}>
+          <Upload name="file" action='https://api.nft.storage/upload' headers={{withCredentials:true,"Authorization":`Bearer ${process.env.REACT_APP_API_KEY}`}}  maxCount={1}>
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
         </Form.Item>
@@ -49,7 +55,7 @@ function MintNFT() {
             },
           ]}
         >
-          <Input />
+          <Input showCount maxLength={50}/>
         </Form.Item>
         {/*설명 파트 */}
         <Form.Item
@@ -64,9 +70,24 @@ function MintNFT() {
         >
           <Input.TextArea showCount maxLength={100} />
         </Form.Item>
+        {/*privatekey 파트 */}
+        <Form.Item
+          name="privateKey"
+          label="PrivateKey"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your privateKey',
+              whitespace: true,
+            },
+          ]}
+        >
+          <Input/>
+        </Form.Item>
+        {/*버튼 */}
         <Form.Item >
           <Button type="primary" htmlType="submit">
-            Register
+            Mint
           </Button>
         </Form.Item>
       </Form>

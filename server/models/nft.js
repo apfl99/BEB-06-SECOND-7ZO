@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-const User = require('./user');
+const Sequelize = require("sequelize");
+const User = require("./user");
 
 module.exports = class NFT extends Sequelize.Model { // User 모델을 만들고 모듈로 exports함(User 모델은 Sequelize.Model을 확장한 클래스)
     static init(sequelize){ // 테이블에 대한 설정 <-> static associate: 다른 모델과의 관계
@@ -8,6 +8,9 @@ module.exports = class NFT extends Sequelize.Model { // User 모델을 만들고
                 type: Sequelize.INTEGER, // INTEGER : MySQL의 INT
                 autoIncrement: true, // autoIncrement : MYSQL의 AUTO_INCREMENT
                 primaryKey: true, // primaryKey: MySQL의 PRIMARY KEY
+            },
+            user_id: {
+                type: Sequelize.INTEGER, 
             },
             token_id: {
                 type: Sequelize.INTEGER, 
