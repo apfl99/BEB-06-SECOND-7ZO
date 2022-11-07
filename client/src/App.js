@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
+import { Home, Market, MintNFT, MyPage, PostCreate, PostDetail, Signin, Signup } from './pages/index'
+import { Navbar } from './components'
+import 'antd/dist/antd.min.css';
+import './assets/styles/App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App stop-dragging">
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home  />} />
+          <Route path="/MintNFT" element={<MintNFT  />} />
+          <Route path="/market" element={<Market   />} />
+          <Route path="/create" element={<PostCreate   />} />
+          <Route path="/detail/:id" element={<PostDetail />} />
+          <Route path="/mypage" element={<MyPage   />} />
+           <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

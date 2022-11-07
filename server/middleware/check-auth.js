@@ -11,6 +11,7 @@ module.exports = async (req, res, next) => {
   // 첫번째 값 : 문자열, 두번째 값 : 토큰
 
   let getUserId;
+  let userAddress;
   try {
     const token = req.headers.cookie.split("=")[1];
     if (!token) {
@@ -28,13 +29,14 @@ module.exports = async (req, res, next) => {
           },
         });
         getUserId = user_id.dataValues.id;
+        userAddress = decoded.address;
       }
     );
-    // console.log(getUserId);
+
     req.userId = getUserId;
+    req.userAddress = userAddress;
     next();
   } catch (err) {
     return res.status(401).send("인증에 실패하였습니다");
   }
-  // console.log(req.userData);
 };
