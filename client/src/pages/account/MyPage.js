@@ -1,9 +1,14 @@
+import "../../assets/styles/MyPage.css";
 import React, {  useState,useEffect } from "react";
 import { useSelector } from 'react-redux';
-import { Button, Descriptions ,Collapse,Skeleton,Drawer,Form, Input} from 'antd';
+import {Button, Descriptions ,Collapse,Skeleton,Drawer,Form, Input} from 'antd';
 import { userInfo } from "../../api/userapi";
 import { transfer20 } from "../../api/userapi";
+import { useNavigate } from "react-router-dom";
+
 const { Panel } = Collapse;
+
+
 /*
 res
 {
@@ -16,12 +21,14 @@ res
 
 */
 function MyPage() {
+  const navigate=useNavigate();
   const [myInfo,setMyInfo]=useState({});
   const [loading,setLoading]=useState(true);
   const [open, setOpen] = useState(false);
   const {login_id,isLogin,accessToken} = useSelector((state) =>{
     return state.account;
   });
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -31,6 +38,10 @@ function MyPage() {
   const onFinish = async (values) => {
     const transInfo={...values,uid:login_id,accessToken:accessToken};
     await transfer20(transInfo);
+    setTimeout(function() {
+      window.location.href='/mypage';
+    }, 1000);
+    
   };
   /*mypage 랜더시에 userid로 해당 post의 정보를 불려옴*/
     useEffect(() => {
@@ -44,13 +55,18 @@ function MyPage() {
     fetchData();
   }, [login_id]);
 
+  const clickPost =(pid)=>{
+    navigate(`../detail/${pid}`);
+  }
+
+
   return (
     
     <div > 
       {!isLogin?<div > 로그인을 하십쇼</div>:
       (loading?<div><Skeleton /><Skeleton /><Skeleton /></div>:
       <div>
-        <Button onClick={showDrawer}>Token 보내기</Button>
+        <button className="transferBtn" onClick={showDrawer}><h5 className="transferText">Token Transfer</h5></button>
         <Descriptions
           bordered
           title="User Info"
@@ -61,23 +77,26 @@ function MyPage() {
             <Descriptions.Item label="Address">{myInfo.userData.address}</Descriptions.Item>
             <Descriptions.Item label="Eth_amount">{myInfo.userData.eth_amount}</Descriptions.Item>
             <Descriptions.Item label="Token_amount">{myInfo.userData.token_amount}</Descriptions.Item>
-            <Descriptions.Item label="Created_at">{myInfo.userData.created_at}</Descriptions.Item>
+            <Descriptions.Item label="Created_at">{myInfo.userData.created_at.slice(0,10)}</Descriptions.Item>
             
         </Descriptions>
-        My Post
+        <br></br>
+        <h1>My Post</h1>
         <Collapse accordion>
         {myInfo.postData.map((post,idx)=>{
+          const title = (<h3 style={{fontSize: '80px !important'}}>{idx+1+" : "+post.title + " / " + post.created_at.slice(0,10)}</h3>);
           return(
-            <Panel header={idx+1+" :"+post.title} key={post.id}>
-              <p>{post.img_url}</p>
-              <p>{post.content}</p>
-              <p>{post.created_at}</p>
+            <Panel header={title} key={post.id}>
+              <div onClick={()=>clickPost(post.id)}>
+                <img src={post.img_url}/>
+                <p>{post.content}</p>
+              </div>
             </Panel>
           );
           })}
         </Collapse>
 
-        
+        <h1>My NFTs</h1>
         <div style={{border:'1px solid red',marginTop:'3px'}}>{/*NFTList */}
           {myInfo.nftData.map((nft)=>{
             return(
