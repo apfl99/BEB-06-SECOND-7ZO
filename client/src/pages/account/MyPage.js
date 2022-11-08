@@ -1,9 +1,16 @@
+import "../../assets/styles/MyPage.css";
 import React, {  useState,useEffect } from "react";
 import { useSelector } from 'react-redux';
-import { Button, Descriptions ,Collapse,Skeleton,Drawer,Form, Input} from 'antd';
+import {Image, Button, Descriptions ,Collapse,Skeleton,Drawer,Form, Input, Row, Col} from 'antd';
 import { userInfo } from "../../api/userapi";
 import { transfer20 } from "../../api/userapi";
+import { useNavigate } from "react-router-dom";
+
+
+
 const { Panel } = Collapse;
+
+
 /*
 res
 {
@@ -13,15 +20,19 @@ res
 ”postData” : Array(각 요소는 object형식),
 ”nftData” : Array(각 요소는 object형식)
 }} 
-
 */
+
 function MyPage() {
+  const navigate=useNavigate();
   const [myInfo,setMyInfo]=useState({});
   const [loading,setLoading]=useState(true);
   const [open, setOpen] = useState(false);
   const {login_id,isLogin,accessToken} = useSelector((state) =>{
     return state.account;
   });
+
+
+
   const showDrawer = () => {
     setOpen(true);
   };
@@ -31,6 +42,10 @@ function MyPage() {
   const onFinish = async (values) => {
     const transInfo={...values,uid:login_id,accessToken:accessToken};
     await transfer20(transInfo);
+    setTimeout(function() {
+      window.location.href='/mypage';
+    }, 1000);
+    
   };
   /*mypage 랜더시에 userid로 해당 post의 정보를 불려옴*/
     useEffect(() => {
@@ -44,13 +59,20 @@ function MyPage() {
     fetchData();
   }, [login_id]);
 
+  const clickPost =(pid)=>{
+    navigate(`../detail/${pid}`);
+  }
+
+
+
+
   return (
     
     <div > 
       {!isLogin?<div > 로그인을 하십쇼</div>:
       (loading?<div><Skeleton /><Skeleton /><Skeleton /></div>:
       <div>
-        <Button onClick={showDrawer}>Token 보내기</Button>
+        <button className="transferBtn" onClick={showDrawer}><h5 className="transferText">Token Transfer</h5></button>
         <Descriptions
           bordered
           title="User Info"
@@ -61,35 +83,60 @@ function MyPage() {
             <Descriptions.Item label="Address">{myInfo.userData.address}</Descriptions.Item>
             <Descriptions.Item label="Eth_amount">{myInfo.userData.eth_amount}</Descriptions.Item>
             <Descriptions.Item label="Token_amount">{myInfo.userData.token_amount}</Descriptions.Item>
-            <Descriptions.Item label="Created_at">{myInfo.userData.created_at}</Descriptions.Item>
+            <Descriptions.Item label="Created_at">{myInfo.userData.created_at.slice(0,10)}</Descriptions.Item>
             
         </Descriptions>
-        My Post
+        <br></br>
+        <h1>My Post</h1>
         <Collapse accordion>
         {myInfo.postData.map((post,idx)=>{
+          const title = (<h3 style={{fontSize: '80px !important'}}>{idx+1+" : "+post.title + " / " + post.created_at.slice(0,10)}</h3>);
           return(
-            <Panel header={idx+1+" :"+post.title} key={post.id}>
-              <p>{post.img_url}</p>
-              <p>{post.content}</p>
-              <p>{post.created_at}</p>
+            <Panel header={title} key={post.id}>
+              <div onClick={()=>clickPost(post.id)}>
+                <img src={post.img_url}/>
+                <p>{post.content}</p>
+              </div>
             </Panel>
           );
           })}
         </Collapse>
 
-        
-        <div style={{border:'1px solid red',marginTop:'3px'}}>{/*NFTList */}
-          {myInfo.nftData.map((nft)=>{
-            return(
-              <article key={nft.id} style={{border:'1px solid green',marginTop:'1px'}}>
-                <h3>
-                  {nft.id}. {nft.price}
-                </h3>
-                <p>{nft.token_uri}</p>
-              </article>
-            );
-          })}
+        {/*NFTList */}
+        <br></br>
+        <h1>My NFTs : {myInfo.nftData.length}</h1>
+        <div className="nftContainer">
+          <Row className="row" gutter={24}>
+            {myInfo.nftData.map(nft => {
+              var nftDetail;
+              
+              let xhr = new XMLHttpRequest;
+              xhr.open('GET', nft.token_uri,false);
+              // xhr.responseType = 'json';
+              xhr.onload = () => {
+                nftDetail = xhr.response;
+              }
+              xhr.send();
+              nftDetail = JSON.parse(nftDetail);
+              console.log(nftDetail)
+              
+              return(
+                
+                <Col xs={8}> 
+                  <br></br>               
+                    <Image
+                    src={nftDetail.image}
+                    width={400}
+                    />
+                    <br></br>
+                    <h2>{nftDetail.name}</h2>
+                </Col>
+              );
+            })}
+          </Row>
         </div>
+          
+        
         {/*드로우 페이지 토큰 보내기에 사용됨 */}
         <Drawer
           title="Token 보내기"
