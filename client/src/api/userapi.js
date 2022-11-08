@@ -1,5 +1,5 @@
-import axios from 'axios';
-import {message} from 'antd';
+import axios from "axios";
+import { message } from "antd";
 
 /*
 POST요청
@@ -22,27 +22,28 @@ userData  = {
 
 아이디 비밀번호를 통해 userInfo를 리턴 하는 함수
 */
-export const logIn=async ({user_id,password})=>{
-    try{
-      const result = await axios({
-        method: "post",
-        url: `http://localhost:3001/user/login`,
-        headers: {
-          Accpet: "application/json",
-        },
-        withCredentials: true,
-        data: { user_id, password },
-      });
-      const response=result.data;
-      const userInfo={...response.userInfo,accessToken:response.accessToken};
-      console.log(userInfo);
-      return userInfo;
-      
-    }catch(err){
-      message.error(`failed post  ${user_id}   ,     ${password}`);
-      return null;
-    }
-  };
+export const logIn = async ({ user_id, password }) => {
+  try {
+    const result = await axios({
+      method: "post",
+      url: `http://localhost:3001/user/login`,
+      headers: {
+        Accpet: "application/json",
+      },
+      withCredentials: true,
+      data: { user_id, password },
+    });
+    const response = result.data;
+    const userInfo = {
+      ...response.userInfo,
+      accessToken: response.accessToken,
+    };
+    return userInfo;
+  } catch (err) {
+    message.error(`failed post  ${user_id}   ,     ${password}`);
+    return null;
+  }
+};
 /*
 POST요청
 req
@@ -65,25 +66,27 @@ userData  = {
 
 아이디 비밀번호 닉네임을 이용해 회원가입
 */
-  export const signUp=async ({user_id,password,nickname})=>{
-    try{
+export const signUp = async ({ user_id, password, nickname }) => {
+  try {
     const result = await axios({
-        method: "post",
-        url: `http://localhost:3001/user/join`,
-        headers: {
+      method: "post",
+      url: `http://localhost:3001/user/join`,
+      headers: {
         Accpet: "application/json",
-        },
-        withCredentials: true,
-        data: { user_id, password ,nickname},
+      },
+      withCredentials: true,
+      data: { user_id, password, nickname },
     });
-    const response=result.data;
-    const userInfo={...response.userInfo,accessToken:response.accessToken};
+    const response = result.data;
+    const userInfo = {
+      ...response.userInfo,
+      accessToken: response.accessToken,
+    };
     return userInfo;
-    
-    }catch(err){
-        message.error(`failed post${user_id}     ,     ${password}`);
-        return null;
-    }
+  } catch (err) {
+    message.error(`failed post${user_id}     ,     ${password}`);
+    return null;
+  }
 };
 /*
 GET요청
@@ -98,23 +101,23 @@ res
 로그인된 id를 통해 유저 정보를 리턴
 */
 export const userInfo = async (uid) => {
-    try{
-      const result = await axios({
-        method: "get",
-        url: `http://localhost:3001/user/${uid}`,
-        headers: {
-          Accpet: "application/json",
-        },
-        withCredentials: true,
-      });
-      const Info=result.data.data;
-      return Info;
-    }catch(err){
-      message.error(`failed get`);
-      return null;
-    }
-  };
-  /*
+  try {
+    const result = await axios({
+      method: "get",
+      url: `http://localhost:3001/user/${uid}`,
+      headers: {
+        Accpet: "application/json",
+      },
+      withCredentials: true,
+    });
+    const Info = result.data.data;
+    return Info;
+  } catch (err) {
+    message.error(`failed get`);
+    return null;
+  }
+};
+/*
 GET요청
 req
 { 
@@ -124,8 +127,14 @@ req
 }
 로그인된 id를 통해 유저 정보를 리턴
 */
-export const transfer20 = async ({uid,private_key, recipient, transfer_amount,accessToken}) => {
-  try{
+export const transfer20 = async ({
+  uid,
+  private_key,
+  recipient,
+  transfer_amount,
+  accessToken,
+}) => {
+  try {
     const result = await axios({
       method: "post",
       url: `http://localhost:3001/user/${uid}/transfer_20`,
@@ -134,10 +143,10 @@ export const transfer20 = async ({uid,private_key, recipient, transfer_amount,ac
         authorization: `Bearer ${accessToken}`,
       },
       withCredentials: true,
-      data: { private_key, recipient, transfer_amount},
+      data: { private_key, recipient, transfer_amount },
     });
     message.error(`success transfer`);
-  }catch(err){
+  } catch (err) {
     message.error(`failed get`);
   }
 };
