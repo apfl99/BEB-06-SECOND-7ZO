@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+.transferBtn {
+    margin-top: 1%;
+    margin-left: 1%;
+    border: 10px;
+    border-radius: 5px;
+    width: 160px;
+    background-color: #1890FF;
+    display: block;
+    font-size: large;
+    height: 40px;
+    text-align: center;
+}
+
+.transferText {
+    color: aliceblue;
+}
+
+.transferBtn:hover {
+    background-color: #0985f9;
+}
+
+.nftContainer {
+    margin-left: 2%;
+    margin-right: 2%;
+    background-color: rgb(91, 85, 85);
+    border-radius: 30px;
+}

@@ -145,8 +145,8 @@ export const transfer20 = async ({
       withCredentials: true,
       data: { private_key, recipient, transfer_amount },
     });
-    message.error(`success transfer`);
+    message.success(`success transfer`);
   } catch (err) {
-    message.error(`failed get`);
+    message.error(err.response.data.message);
   }
 };
