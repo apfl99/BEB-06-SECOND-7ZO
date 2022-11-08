@@ -7,7 +7,7 @@
 * 팀원 : 조은석, 김현우, 허연재, 안요한
 * Date : 2022/10/27 ~ 2022/11/08
 
-## :two: **7ZO - Posting Commnity**
+## :two: **7ZO - News Posting Commnity**
 
 **7ZO 의 Posting Community 는 각종 뉴스를 포스팅 하여 토큰을 지급받고 NFT를 발행, 수집및 거래를 할 수 있는 커뮤니티 입니다.**
 
