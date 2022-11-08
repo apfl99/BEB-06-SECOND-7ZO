@@ -31,6 +31,7 @@ FE - React, Redux(redux-toolkit, redux-persist)
 
 BE - MySql (squelize), 
         Infura, ipfs-http-client, NFT.storage
+        
  session : OAuth(Github) + JWT  // jsonwebtoken
 
 SC - Solidiy, Web3.js, Truffle, OpenZepplin
