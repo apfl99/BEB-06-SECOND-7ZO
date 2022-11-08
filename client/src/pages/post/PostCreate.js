@@ -1,11 +1,10 @@
-
 import React from "react";
-import { useSelector } from 'react-redux';
-import { UploadOutlined } from '@ant-design/icons';
-import { Form,Input, Upload,Button,message} from 'antd';
+import { useSelector } from "react-redux";
+import { UploadOutlined } from "@ant-design/icons";
+import { Form, Input, Upload, Button, message } from "antd";
 import { createPost } from "../../api/Postapi";
 
-
+import css from "../../assets/styles/topic/topic.css";
 
 /*{
   ”title” : string,
@@ -13,16 +12,23 @@ import { createPost } from "../../api/Postapi";
   ”image” : “ImgUrl”,
 }*/
 
-
 function PostCreate() {
-  const accessToken = useSelector((state) =>{
+  const accessToken = useSelector((state) => {
     return state.account.accessToken;
   });
   //타이틀 본문 이미지를 받는 함수
-  const onFinish = async ({content,title,upload}) => {
+  const onFinish = async ({ content, title, upload }) => {
+    const imageUrl = !upload
+      ? null
+      : "https://" +
+        upload[0].response.value.cid +
+        ".ipfs.nftstorage.link/" +
+        upload[0].name;
+    await createPost(title, content, imageUrl, accessToken);
 
-    const imageUrl=!upload?null:"https://"+upload[0].response.value.cid+".ipfs.nftstorage.link/"+upload[0].name;
-    await createPost(title, content,imageUrl,accessToken);
+    setTimeout(function () {
+      window.location.href = `/`;
+    }, 1000);
   };
   const normFile = (e) => {
     //console.log('Upload event:', e);
@@ -31,17 +37,11 @@ function PostCreate() {
     }
     return e?.fileList;
   };
-  
-
-  
 
   return (
-    <div>
-      <h1>Create POST</h1>
-      <Form
-        name="validate_other"
-        onFinish={onFinish} 
-      >
+    <div className="topic-main">
+      <h1 className="newtopic-main_title">Create POST</h1>
+      <Form name="validate_other" onFinish={onFinish}>
         {/*이미지 업로드 파트 */}
         <Form.Item
           name="upload"
@@ -49,7 +49,15 @@ function PostCreate() {
           valuePropName="fileList"
           getValueFromEvent={normFile}
         >
-          <Upload name="file" action='https://api.nft.storage/upload' headers={{withCredentials:true,"Authorization":`Bearer ${process.env.REACT_APP_API_KEY}`}}  maxCount={1}>
+          <Upload
+            name="file"
+            action="https://api.nft.storage/upload"
+            headers={{
+              withCredentials: true,
+              Authorization: `Bearer ${process.env.REACT_APP_API_KEY}`,
+            }}
+            maxCount={1}
+          >
             <Button icon={<UploadOutlined />}>Click to upload</Button>
           </Upload>
         </Form.Item>
@@ -60,7 +68,7 @@ function PostCreate() {
           rules={[
             {
               required: true,
-              message: 'Please input title!',
+              message: "Please input title!",
               whitespace: true,
             },
           ]}
@@ -74,20 +82,19 @@ function PostCreate() {
           rules={[
             {
               required: true,
-              message: 'Please input content',
+              message: "Please input content",
             },
           ]}
         >
-          <Input.TextArea showCount maxLength={100} />
+          <Input.TextArea showCount maxLength={1000} />
         </Form.Item>
-        <Form.Item >
+        <Form.Item>
           <Button type="primary" htmlType="submit">
             Register
           </Button>
         </Form.Item>
       </Form>
     </div>
-
-  )
+  );
 }
 export default PostCreate;

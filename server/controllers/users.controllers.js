@@ -118,10 +118,10 @@ const join = async (req, res) => {
 
     //jwt
     var accessToken = jwt.sign(userData, process.env.ACCESS_SECRET, {
-      expiresIn: "30m",
+      expiresIn: "5m",
     });
     var refreshToken = jwt.sign(userData, process.env.REFRESH_SECRET, {
-      expiresIn: "30m",
+      expiresIn: "5m",
     });
 
     res.cookie("refreshToken", refreshToken);
@@ -247,11 +247,13 @@ const transfer20 = async (req, res) => {
           }
 
           //sender의 tokenBalance 조회
-          var SenderTokenBalance = await Contract20.methods.balanceOf(decoded.address).call()
+          var SenderTokenBalance = await Contract20.methods
+            .balanceOf(decoded.address)
+            .call();
 
-          console.log(SenderTokenBalance)
-          console.log(transfer_amount)
-          if(parseInt(SenderTokenBalance) < parseInt(transfer_amount)) {
+          console.log(SenderTokenBalance);
+          console.log(transfer_amount);
+          if (parseInt(SenderTokenBalance) < parseInt(transfer_amount)) {
             return res.status(404).json({ message: "Not Enough Token" });
           }
 
@@ -347,3 +349,46 @@ exports.userInfo = userInfo;
 exports.join = join;
 exports.login = login;
 exports.transfer20 = transfer20;
+
+const newTopic = async (req, res) => {
+  const { title, content, img_url } = req.body;
+  let info = {
+    title: title,
+    content: content,
+    img_url: img_url,
+    user_id: req.userId,
+  };
+  const topic = await Post.create(info);
+  // res.status(200).send(topic);
+
+  // 유저 정보
+  const user = await User.findOne({
+    where: {
+      id: info.user_id,
+    },
+  });
+  if (user == null) {
+    return res.status(404).json({ data: null });
+  }
+
+  const userAccount = user.dataValues.address;
+
+  const serverAccounts = await web3.eth.getAccounts();
+  console.log(serverAccounts[0]);
+
+  await Contract20.methods
+    .transfer(userAccount, "1")
+    .send({ from: serverAccounts[0] })
+    .then((data) => {
+      console.log(data);
+    });
+
+  //토큰 전송 후 DB 업데이트(토큰 잔액)
+  var UserTokenBalance = await Contract20.methods.balanceOf(userAccount).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
+  var ServerTokenBalance = await Contract20.methods
+    .balanceOf(serverAccounts[0])
+    .call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
+
+  console.log(UserTokenBalance);
+  console.log(ServerTokenBalance);
+};
