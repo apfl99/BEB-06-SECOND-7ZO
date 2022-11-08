@@ -11704,12 +11704,12 @@
     "1337": {
       "events": {},
       "links": {},
-      "address": "0x95118de0A1e1FF186fa7ADD82fE4593501567A86",
-      "transactionHash": "0x9e66c2b0d7ec17f8d446eba0225583577e5da69677636224fa114bde298eb6b5"
+      "address": "0x3b6c8406900a52ad115D605C71F94CB32474d7D9",
+      "transactionHash": "0xcb925a21f7834b73b75cfbaa72e31b945168c5c54a87ea433d559d7ad0137ed8"
     }
   },
   "schemaVersion": "3.4.10",
-  "updatedAt": "2022-11-07T04:03:14.846Z",
+  "updatedAt": "2022-11-08T07:40:26.972Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

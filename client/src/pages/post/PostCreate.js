@@ -25,6 +25,10 @@ function PostCreate() {
         ".ipfs.nftstorage.link/" +
         upload[0].name;
     await createPost(title, content, imageUrl, accessToken);
+
+    setTimeout(function () {
+      window.location.href = `/`;
+    }, 1000);
   };
   const normFile = (e) => {
     //console.log('Upload event:', e);
