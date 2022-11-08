@@ -161,10 +161,10 @@ const login = async (req, res) => {
 
       //JWT 발급
       var accessToken = jwt.sign(userData, process.env.ACCESS_SECRET, {
-        expiresIn: "100m",
+        expiresIn: "30m",
       });
       var refreshToken = jwt.sign(userData, process.env.REFRESH_SECRET, {
-        expiresIn: "100m",
+        expiresIn: "30m",
       });
 
       res.cookie("refreshToken", refreshToken);
@@ -196,7 +196,7 @@ const transfer20 = async (req, res) => {
   });
   if (recipientSearch == null) {
     console.log("Invaild Recipient");
-    return res.status(404).json({ message2: "Can’t execute request" });
+    return res.status(404).json({ message: "Invaild Recipient" });
   }
 
   //recipient 계정 주소 저장
@@ -219,13 +219,9 @@ const transfer20 = async (req, res) => {
           // 서버는 네트워크에 등록되어 있어 서명 X(Ganache에서 가지고 있음)
           // const accounts = await web3.eth.getAccounts();
           // const serverAccount = accounts[0];
-          // await Contract20.methods
-          //   .transfer(decoded.address, 100)
-          //   .send({ from: serverAccount });
-          var tokenBalance = await Contract20.methods
-            .balanceOf(decoded.address)
-            .call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
-          
+          // await Contract20.methods.transfer(decoded.address,200).send({from: serverAccount});
+          // var tokenBalance = await Contract20.methods.balanceOf(decoded.address).call(); // 컨트랙 내부 함수 호출(단순 조회일 경우, 트랜잭션을 발생시키지 않기 때문에 send가 아닌 call로)
+          // console.log(tokenBalance)
 
           const tokenBalanceCheck = await Contract20.methods
             .balanceOf(decoded.address)
@@ -248,7 +244,18 @@ const transfer20 = async (req, res) => {
 
           // sender가 충분한 가스비가 없을 경우
           if (parseInt(gasPrice) > parseInt(balance)) {
-            return res.status(404).json({ message2: "Can’t execute request가스" });
+            return res.status(404).json({ message: "Not Enough Gas Price" });
+          }
+
+          //sender의 tokenBalance 조회
+          var SenderTokenBalance = await Contract20.methods
+            .balanceOf(decoded.address)
+            .call();
+
+          console.log(SenderTokenBalance);
+          console.log(transfer_amount);
+          if (parseInt(SenderTokenBalance) < parseInt(transfer_amount)) {
+            return res.status(404).json({ message: "Not Enough Token" });
           }
 
           //SignTX를 위한 Buffer형태로 변환
@@ -330,12 +337,12 @@ const transfer20 = async (req, res) => {
         } catch (e) {
           console.log("Invaild TX");
           console.log(e);
-          return res.status(404).json({ message2: "Can’t execute request" });
+          return res.status(404).json({ message: "Invaild Tx" });
         }
       }
     });
   } else {
-    return res.status(404).json({ message: "invalid access token" });
+    return res.status(404).json({ message: "Invalid access token" });
   }
 };
 

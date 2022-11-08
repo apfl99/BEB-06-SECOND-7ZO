@@ -4,7 +4,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Form, Input, Upload, Button, message } from "antd";
 import { createPost } from "../../api/Postapi";
 
-import css from "../../assets/styles/topic/new_topic.css";
+import css from "../../assets/styles/topic/topic.css";
 
 /*{
   ”title” : string,
@@ -25,6 +25,10 @@ function PostCreate() {
         ".ipfs.nftstorage.link/" +
         upload[0].name;
     await createPost(title, content, imageUrl, accessToken);
+
+    setTimeout(function () {
+      window.location.href = `/`;
+    }, 1000);
   };
   const normFile = (e) => {
     //console.log('Upload event:', e);
@@ -35,7 +39,7 @@ function PostCreate() {
   };
 
   return (
-    <div className="newtopic-main">
+    <div className="topic-main">
       <h1 className="newtopic-main_title">Create POST</h1>
       <Form name="validate_other" onFinish={onFinish}>
         {/*이미지 업로드 파트 */}
