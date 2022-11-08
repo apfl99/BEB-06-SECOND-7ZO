@@ -41,8 +41,8 @@ function Signup() {
         console.log('Failed:', errorInfo);
       };
     return(
-        <div>
-            <h1>SiginUp</h1>
+        <div style={{marginTop:"10vh"}}>
+        <h1 style={{margin:"8vh"}} align="center">Enjoy 7ZO!</h1>
         <Form
         name="basic"
         labelCol={{
@@ -133,9 +133,9 @@ function Signup() {
         >
             <Input />
         </Form.Item>
-        <Form.Item  >
+        <Form.Item  align="center">
             <Button type="primary" htmlType="submit">
-            Register
+            Register!
             </Button>
         </Form.Item>
         </Form>

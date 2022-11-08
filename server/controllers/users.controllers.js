@@ -226,8 +226,9 @@ const transfer20 = async (req, res) => {
           const tokenBalanceCheck = await Contract20.methods
             .balanceOf(decoded.address)
             .call();
-          if (tokenBalanceCheck < transfer_amount) {
-            return res.status(404).json({ message: "Not Enough Token" });
+            
+          if (Number(tokenBalanceCheck) < Number(transfer_amount)) {
+            return res.status(404).json({ message2: "Can’t execute request토큰부족" });
           }
           // 토큰 전송 트랜잭션 발생 : (토큰 수신자 주소, 전송 토큰 양) 인자, send를 통해 트랜잭션 발생(이때, erc20.sol에 따라 토큰 보유자만 전송 가능)
 

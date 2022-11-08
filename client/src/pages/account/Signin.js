@@ -21,28 +21,9 @@ userData  = {
     }
 */
 function Signin() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  /** 로그인 함수*/
-  /*const logIn=async ({user_id,password})=>{
-    try{
-      const result = await axios({
-        method: "post",
-        url: `http://localhost:3001/user/login`,
-        headers: {
-          Accpet: "application/json",
-        },
-        withCredentials: true,
-        data: { user_id, password },
-      });
-      const response=result.data;
-      const userInfo={...response.userInfo,accessToken:response.accessToken};
-      console.log(userInfo);
-      dispatch({type:"accountSlice/login",payload:userInfo});
-    }catch(err){
-      message.error(`failed post${user_id}     ,     ${password}`);
-    }
-  };*/
+  const navigate=useNavigate();
+  const dispatch=useDispatch();
+  
   /** form제출 성공시*/
   const onFinish = async (values) => {
     const userInfo = await logIn(values);
@@ -54,6 +35,10 @@ function Signin() {
     console.log("Failed:", errorInfo);
   };
   return (
+    <div style={{marginTop:"10vh"}} >
+    <h1 align="center"style={{color: "#60d8b0",fontWeight:"bolder",fontSize:40}}>
+        LogIn
+    </h1>
     <Form
       name="basic"
       labelCol={{
@@ -110,7 +95,8 @@ function Signin() {
         </Button>
       </Form.Item>
     </Form>
-  );
+    </div>
+  )
 }
 
 export default Signin;
