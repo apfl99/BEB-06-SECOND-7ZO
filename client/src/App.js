@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 import { Home, Market, MintNFT, MyPage, PostCreate, PostDetail, Signin, Signup } from './pages/index'
-import { Navbar } from './components'
+import { Navbar ,Footer} from './components'
 import 'antd/dist/antd.min.css';
 import './assets/styles/App.css';
 
@@ -21,6 +21,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
+      <Footer />
     </div>
   );
 }
