@@ -6,9 +6,6 @@ import { userInfo } from "../../api/userapi";
 import { transfer20 } from "../../api/userapi";
 import { useNavigate } from "react-router-dom";
 
-import Container from 'react-bootstrap/Container';
-// import Row from 'react-bootstrap/Row';
-// import Col from 'react-bootstrap/Col';
 
 
 const { Panel } = Collapse;
@@ -23,8 +20,8 @@ res
 ”postData” : Array(각 요소는 object형식),
 ”nftData” : Array(각 요소는 object형식)
 }} 
-
 */
+
 function MyPage() {
   const navigate=useNavigate();
   const [myInfo,setMyInfo]=useState({});
@@ -125,7 +122,7 @@ function MyPage() {
               
               return(
                 
-                <Col span={6}> 
+                <Col xs={8}> 
                   <br></br>               
                     <Image
                     src={nftDetail.image}

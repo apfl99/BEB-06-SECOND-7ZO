@@ -161,10 +161,10 @@ const login = async (req, res) => {
 
       //JWT 발급
       var accessToken = jwt.sign(userData, process.env.ACCESS_SECRET, {
-        expiresIn: "10m",
+        expiresIn: "30m",
       });
       var refreshToken = jwt.sign(userData, process.env.REFRESH_SECRET, {
-        expiresIn: "10m",
+        expiresIn: "30m",
       });
 
       res.cookie("refreshToken", refreshToken);
