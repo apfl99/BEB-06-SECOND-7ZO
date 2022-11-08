@@ -74,10 +74,10 @@ _If the community side is operating normally, you can see the main page of 7ZO o
 ### :mag: Home
 
 
-### :mag: Home
+### :mag: Post
 
 
-### :mag: Home
+### :mag: Sign
 
 
 ### :mag: Mypage
