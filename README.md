@@ -43,6 +43,9 @@ SC - Solidiy, Web3.js, Truffle, OpenZepplin
 [Back-end]
 ![스크린샷 2022-11-08 17-08-57](https://user-images.githubusercontent.com/108708252/200509549-a5c1e950-d566-43f8-b597-a52b26db2df5.png)
 
+### :keyboard: **WireFrame**
+![image](https://user-images.githubusercontent.com/108708252/200531775-27c8232f-3760-422c-a0a2-b555878784d5.png)
+
 ### :keyboard: **실행 Installation**
 **프로그램을 실행하려면 npm install 명령을 사용하여 작업에 필요한 패키지를 자동으로 설치합니다. 패키지에 대한 정보는 패키지에서 찾을 수 있습니다.**
 **json 파일 .env.example 파일을 따라 서버 배포를 위한 액세스 키를 작성하고 .env로 저장합니다.**
