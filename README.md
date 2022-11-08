@@ -76,12 +76,16 @@ _If the community side is operating normally, you can see the main page of 7ZO o
 ## :five: **실행화면, Execution screen**
 ### :mag: Home
 
+![Peek_2022-11-08_19-25](https://user-images.githubusercontent.com/108708252/200543158-e83c71fa-d3b0-4261-a232-903a07b00397.gif)
 
 ### :mag: Post
 
+![Peek_2022-11-08_19-29](https://user-images.githubusercontent.com/108708252/200543259-ad4d4733-330e-4e45-b344-8a63d720586c.gif)
 
 ### :mag: Sign
 
+![Peek_2022-11-08_19-26](https://user-images.githubusercontent.com/108708252/200543389-48378c72-1e36-44bf-aad5-147c582c7ee1.gif)
+![Peek_2022-11-08_19-31](https://user-images.githubusercontent.com/108708252/200543394-126aa540-7f0c-4f33-9eee-3ef8dcf63f9c.gif)
 
 ### :mag: Mypage
 
