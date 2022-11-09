@@ -28,6 +28,7 @@ const getTopic = async (req, res) => {
 
 // 글 작성
 const newTopic = async (req, res) => {
+  console.log(req.body)
   const { title, content, img_url } = req.body;
   let info = {
     title: title,
@@ -42,6 +43,7 @@ const newTopic = async (req, res) => {
       id: info.user_id,
     },
   });
+  console.log(user)
   if (user == null) {
     return res.status(404).json({ data: null });
   }
