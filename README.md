@@ -98,3 +98,11 @@ _If the community side is operating normally, you can see the main page of 7ZO o
 ### :mag: Transfer
 
 ![2022-10-20_18-31-25](https://user-images.githubusercontent.com/108708252/200514284-de9b4d56-b763-4d85-89c9-dd7ff0df5d53.png)
+
+### :mag: Faucet
+![image](https://user-images.githubusercontent.com/64346003/208817697-4f09617e-a320-416e-a310-e622ce2774cd.png)
+
+
+### :mag: Daemon(Tx Logging)
+![image](https://user-images.githubusercontent.com/64346003/208817720-9fbc0886-130a-412e-890e-5c31be02ca20.png)
+
