@@ -100,9 +100,10 @@ _If the community side is operating normally, you can see the main page of 7ZO o
 ![2022-10-20_18-31-25](https://user-images.githubusercontent.com/108708252/200514284-de9b4d56-b763-4d85-89c9-dd7ff0df5d53.png)
 
 ### :mag: Faucet
-![faucet.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/688570c8-2fe2-4c28-82ec-fb363df776a8/faucet.gif)
+
+![faucet](https://user-images.githubusercontent.com/64346003/208818058-08577f21-0be9-442f-84a2-2f17c5c546bc.gif)
 
 
 ### :mag: Daemon(Tx Logging)
-![daemon.gif](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c8cf4362-20a9-4a7e-bb5f-aa9c4267b012/daemon.gif)
 
+![daemon](https://user-images.githubusercontent.com/64346003/208818077-b4dc310b-9d27-4f2d-8cf8-b4d92347fc4c.gif)
